@@ -1,4 +1,5 @@
 site_name: Ketting
+site_url: https://kwatman.github.io/Ketting/
 theme:
   name: material
   features:
