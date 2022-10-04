@@ -1,0 +1,5 @@
+site_name: Ketting
+theme:
+  name: material
+  features:
+    - navigation.tabs
