@@ -26,6 +26,10 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "docs", "docs\", "{EB5BA128-
 		SlnRelativePath = "docs\"
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ketting-server", "Ketting-server\Ketting-server.csproj", "{94A60253-C23B-4233-9144-C7A152E4C8ED}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KetKoin", "KetKoin\KetKoin.csproj", "{BD237666-A722-4C7D-9FA1-6B85A287C772}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,6 +44,14 @@ Global
 		{EB5BA128-6BB2-499B-B471-98A338613AFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EB5BA128-6BB2-499B-B471-98A338613AFA}.Release|Any CPU.ActiveCfg = Debug|Any CPU
 		{EB5BA128-6BB2-499B-B471-98A338613AFA}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{94A60253-C23B-4233-9144-C7A152E4C8ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{94A60253-C23B-4233-9144-C7A152E4C8ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{94A60253-C23B-4233-9144-C7A152E4C8ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{94A60253-C23B-4233-9144-C7A152E4C8ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD237666-A722-4C7D-9FA1-6B85A287C772}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD237666-A722-4C7D-9FA1-6B85A287C772}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD237666-A722-4C7D-9FA1-6B85A287C772}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD237666-A722-4C7D-9FA1-6B85A287C772}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
