@@ -7,6 +7,8 @@ theme:
     - navigation.sections
 
 markdown_extensions:
+  - pymdownx.highlight
+  - pymdownx.inlinehilite
   - pymdownx.highlight:
       anchor_linenums: true
   - pymdownx.inlinehilite
