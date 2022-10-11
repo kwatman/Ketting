@@ -7,6 +7,11 @@ theme:
     - navigation.sections
 
 markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
   - tables
   - pymdownx.superfences:
       custom_fences:
