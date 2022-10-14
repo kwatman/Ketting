@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ketting", "Ketting\Ketting.
 EndProject
 Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "docs", "docs\", "{EB5BA128-6BB2-499B-B471-98A338613AFA}"
 	ProjectSection(WebsiteProperties) = preProject
-		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.8"
 		Debug.AspNetCompiler.VirtualPath = "/localhost_61447"
 		Debug.AspNetCompiler.PhysicalPath = "docs\"
 		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_61447\"
@@ -26,9 +26,9 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "docs", "docs\", "{EB5BA128-
 		SlnRelativePath = "docs\"
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ketting-server", "Ketting-server\Ketting-server.csproj", "{94A60253-C23B-4233-9144-C7A152E4C8ED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ketting-server", "Ketting-server\Ketting-server.csproj", "{94A60253-C23B-4233-9144-C7A152E4C8ED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KetKoin", "KetKoin\KetKoin.csproj", "{BD237666-A722-4C7D-9FA1-6B85A287C772}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KetKoin", "KetKoin\KetKoin.csproj", "{BD237666-A722-4C7D-9FA1-6B85A287C772}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
