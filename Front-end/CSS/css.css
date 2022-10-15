@@ -1,0 +1,65 @@
+html {
+    height: 80%;
+}
+
+body {
+    background-color: #808080;
+    color: #dbe5fe;
+    font-size: 2rem;
+    height: 100%;
+}
+
+nav {
+    display: flex;
+    justify-content: space-evenly;
+    background-color: #333;
+}
+
+nav img {
+    margin: auto;
+}
+
+nav a {
+    text-decoration: none;
+    color: #dbe5fe;
+    margin: auto;
+    padding: 3%;
+    height: inherit;
+}
+
+nav a:hover{
+    background-color: #000000;
+}
+
+#homeMain {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+#searchWalletLabel{
+    display: block;
+}
+
+#searchWalletInput {
+    height: 2rem;
+    font-size: 2rem;
+}
+
+#searchWalletButton {
+    font-size: 2rem;
+}
+
+#walletMain, #transactionMain {
+    margin: 3%;
+    padding: 1rem;
+    border-radius: 1rem;
+    background-color: #ccc;
+    color: #333;
+    font-size: 1.5rem;
+}
+
+#walletMain p:not(:first-child) {
+    margin-top: 0.5rem;
+}

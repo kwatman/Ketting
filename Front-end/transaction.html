@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" type="text/css" href="CSS/reset.css">
+    <link rel="stylesheet" type="text/css" href="CSS/css.css">
+    <title>KetKoin</title>
+</head>
+<body>
+    <nav>
+        <img src="IMG/logo.png" alt="KetKoin logo" />
+        <a href="index.html">Home</a>
+        <a href="#">Make a transaction</a>
+    </nav>
+
+    <main id="transactionMain">
+        <form onsubmit="newTransaction()">
+            <label for="transactionFrom">From</label>
+            <input type="text" id="transactionFrom" /><br/>
+            <label for="transactionTo">To</label>
+            <input type="text" id="transactionTo" /><br />
+            <label for="transactionAmount">Amount</label>
+            <input type="text" id="transactionAmount" /><br />
+            <button type="submit">Send</button>
+        </form>
+    </main>
+
+    <script src="JS/script.js"></script>
+</body>
+</html>
