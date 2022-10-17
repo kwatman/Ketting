@@ -1,7 +1,6 @@
 ﻿name: build and test
 
 on:
-  push:
   pull_request:
     branches: [ dev ]
     paths:
