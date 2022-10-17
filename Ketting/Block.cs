@@ -17,7 +17,7 @@ namespace Ketting
         public string PublicKey { get; set; }
         public string Signature { get; set; }
 
-        /*
+        /*@
         public int HashBlock(string prevHash, string data, DateTime timestamp)
         {
             string x = prevHash + "@@" +  data + "@@" + timestamp;
@@ -26,7 +26,7 @@ namespace Ketting
         }
         */
 
-        static string HashBlock(string prevHash, BlockData data, DateTime timestamp)
+        public static string HashBlock(string prevHash, BlockData data, DateTime timestamp)
         {
             
             using (SHA256 sha256Hash = SHA256.Create())
@@ -45,6 +45,7 @@ namespace Ketting
 
         public static bool VerifyBlock(Block block)
         {
+
             if (Block.HashBlock(block.PrevHash, block.Data, block.Timestamp) == block.Signature)
             {
                 return true;
