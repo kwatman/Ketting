@@ -5,30 +5,11 @@ VisualStudioVersion = 17.1.32421.90
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ketting", "Ketting\Ketting.csproj", "{64A7731B-3FCE-47B9-9F9C-580FCA090BD1}"
 EndProject
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "docs", "docs\", "{EB5BA128-6BB2-499B-B471-98A338613AFA}"
-	ProjectSection(WebsiteProperties) = preProject
-		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
-		Debug.AspNetCompiler.VirtualPath = "/localhost_61447"
-		Debug.AspNetCompiler.PhysicalPath = "docs\"
-		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_61447\"
-		Debug.AspNetCompiler.Updateable = "true"
-		Debug.AspNetCompiler.ForceOverwrite = "true"
-		Debug.AspNetCompiler.FixedNames = "false"
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.VirtualPath = "/localhost_61447"
-		Release.AspNetCompiler.PhysicalPath = "docs\"
-		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_61447\"
-		Release.AspNetCompiler.Updateable = "true"
-		Release.AspNetCompiler.ForceOverwrite = "true"
-		Release.AspNetCompiler.FixedNames = "false"
-		Release.AspNetCompiler.Debug = "False"
-		VWDPort = "61447"
-		SlnRelativePath = "docs\"
-	EndProjectSection
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ketting-server", "Ketting-server\Ketting-server.csproj", "{94A60253-C23B-4233-9144-C7A152E4C8ED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ketting-server", "Ketting-server\Ketting-server.csproj", "{94A60253-C23B-4233-9144-C7A152E4C8ED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KetKoin", "KetKoin\KetKoin.csproj", "{BD237666-A722-4C7D-9FA1-6B85A287C772}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KetKoin", "KetKoin\KetKoin.csproj", "{BD237666-A722-4C7D-9FA1-6B85A287C772}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KettingTests", "KettingTests\KettingTests.csproj", "{03AA37BC-B98F-4B8C-8918-135671D26092}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -40,10 +21,6 @@ Global
 		{64A7731B-3FCE-47B9-9F9C-580FCA090BD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{64A7731B-3FCE-47B9-9F9C-580FCA090BD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{64A7731B-3FCE-47B9-9F9C-580FCA090BD1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EB5BA128-6BB2-499B-B471-98A338613AFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EB5BA128-6BB2-499B-B471-98A338613AFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EB5BA128-6BB2-499B-B471-98A338613AFA}.Release|Any CPU.ActiveCfg = Debug|Any CPU
-		{EB5BA128-6BB2-499B-B471-98A338613AFA}.Release|Any CPU.Build.0 = Debug|Any CPU
 		{94A60253-C23B-4233-9144-C7A152E4C8ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{94A60253-C23B-4233-9144-C7A152E4C8ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{94A60253-C23B-4233-9144-C7A152E4C8ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -52,6 +29,10 @@ Global
 		{BD237666-A722-4C7D-9FA1-6B85A287C772}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BD237666-A722-4C7D-9FA1-6B85A287C772}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BD237666-A722-4C7D-9FA1-6B85A287C772}.Release|Any CPU.Build.0 = Release|Any CPU
+		{03AA37BC-B98F-4B8C-8918-135671D26092}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03AA37BC-B98F-4B8C-8918-135671D26092}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03AA37BC-B98F-4B8C-8918-135671D26092}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03AA37BC-B98F-4B8C-8918-135671D26092}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
