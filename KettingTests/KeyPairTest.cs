@@ -14,11 +14,11 @@ public class KeyPairTest
     public void KeyPairSignTest()
     {
         KeyPair keyPair1 = new KeyPair();
-        byte[] data = Encoding.UTF8.GetBytes("test data");
+        byte[] data = Convert.FromBase64String(Convert.ToBase64String(Encoding.UTF8.GetBytes("test data")));
         byte[] signedData = keyPair1.Sign(data);
 
         KeyPair keyPair2 = new KeyPair();
-        Byte[] data2 = Encoding.UTF8.GetBytes("data 2");
+        Byte[] data2 = Convert.FromBase64String(Convert.ToBase64String(Encoding.UTF8.GetBytes("data 2")));
         byte[] signedData2 = keyPair2.Sign(data2);
         
         Assert.IsTrue(KeyPair.Verify(keyPair1.rsa.ExportParameters(false),signedData,data));
