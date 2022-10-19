@@ -5,6 +5,8 @@ namespace Ketting
 {
     public class Ketting
     {
+        public List<Block> BlockChain { get; set; }
+        
         
     }
 }
