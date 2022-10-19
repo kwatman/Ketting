@@ -15,7 +15,7 @@ namespace KettingTests
             return "text";
         }
 
-        public bool Verify(Block block)
+        public bool Verify()
         {
             return true;
         }

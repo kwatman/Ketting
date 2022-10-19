@@ -16,6 +16,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\KetKoin\KetKoin.csproj" />
       <ProjectReference Include="..\Ketting\Ketting.csproj" />
     </ItemGroup>
 
