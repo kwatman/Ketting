@@ -4,13 +4,18 @@ using Ketting;
 
 namespace KetKoin;
 
-public class KetKoin : Ketting.Ketting
+public class KetKoinChain : KettingChain
 {
-    public int TransactionMin { get; set; }
     public KeyPair NodeKeys { get; set; }
     public static List<Transaction> TransactionPool { get; set; }
     public static List<Block>  BlockChain { get; set; }
 
+    public KetKoinChain()
+    {
+        NodeKeys = new KeyPair();
+        TransactionPool = new List<Transaction>();
+    }
+    
     public void SetKeys(Byte[] privateKey, Byte[] publicKey)
     {
         int keySize = KeyPair.KEYSIZE;
@@ -38,11 +43,13 @@ public class KetKoin : Ketting.Ketting
         return block;
     }
 
-    public void AddTransactionToPool(Transaction transaction)
+    public bool AddTransactionToPool(Transaction transaction)
     {
         if (transaction.Verify())
         {
             TransactionPool.Add(transaction);
+            return true;
         }
+        return false;
     }
 }

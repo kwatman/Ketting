@@ -30,5 +30,8 @@ public class BlockTest
         block.Signature = hash;
 
         Assert.IsTrue(Block.VerifyBlock(block));
+        block.Signature = "non valid signature";
+        Assert.IsFalse(Block.VerifyBlock(block));
+        
     }
 }

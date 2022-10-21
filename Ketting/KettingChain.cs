@@ -3,16 +3,24 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace Ketting
 {
-    public class Ketting
+    public class KettingChain
     {
         public List<Block> BlockChain { get; set; }
 
-        public void AddBlock(Block block)
+        public KettingChain()
+        {
+            BlockChain = new List<Block>();
+        }
+        
+        public bool AddBlock(Block block)
         {
             if (Block.VerifyBlock(block))
             {
                 BlockChain.Add(block);
+                return true;
             }
+
+            return false;
         }
 
     }
