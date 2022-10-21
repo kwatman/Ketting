@@ -8,10 +8,16 @@ public class KetKoin : Ketting.Ketting
 {
     public int TransactionMin { get; set; }
     public KeyPair NodeKeys { get; set; }
-    
     public List<Transaction> TransactionPool { get; set; }
     public new List<Block>  BlockChain { get; set; }
 
+    public void SetKeys(Byte[] privateKey, Byte[] publicKey)
+    {
+        int keySize = KeyPair.KEYSIZE;
+        NodeKeys.rsa.ImportRSAPrivateKey(privateKey,out keySize);
+        NodeKeys.rsa.ImportRSAPublicKey(publicKey,out keySize);
+    }
+    
     public Block MintBlock()
     {
         Block block = new Block();

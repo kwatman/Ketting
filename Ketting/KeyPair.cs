@@ -4,10 +4,11 @@ namespace Ketting;
 
 public class KeyPair
 {
+    public const int KEYSIZE = 2048;
     public RSA rsa { get; set; }
     public KeyPair()
     {
-        rsa = RSA.Create(2048);
+        rsa = RSA.Create(KEYSIZE);
     }
 
     public KeyPair(string publicKey)
