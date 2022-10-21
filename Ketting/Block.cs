@@ -12,9 +12,10 @@ namespace Ketting
     {
         public string PrevHash { get; set; }
         public int Version { get; set; }
-        public BlockData Data { get; set; }
+        public List<BlockData> Data { get; set; }
         public DateTime Timestamp { get; set; }
         public string PublicKey { get; set; }
+        public string Hash { get; set; }
         public string Signature { get; set; }
 
         /*@
@@ -26,13 +27,18 @@ namespace Ketting
         }
         */
 
-        public static string HashBlock(string prevHash, BlockData data, DateTime timestamp)
+        public static string HashBlock(string prevHash, List<BlockData> data, DateTime timestamp)
         {
-            
             using (SHA256 sha256Hash = SHA256.Create())
             {
-                string text = prevHash + "@@" + data.ToString() + "@@" + timestamp;
-                byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(text));
+                string dataString = "";
+                foreach (BlockData blockData in data)
+                {
+                    dataString += blockData.ToString() + "@@";
+                }
+                
+                string text = prevHash + "@@" + dataString + "@@" + timestamp;
+                byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(text)); // check this later can cause problems cause it does not use base64 but utf8
 
                 StringBuilder builder = new StringBuilder();
                 for (int i = 0; i < bytes.Length; i++)
@@ -45,14 +51,11 @@ namespace Ketting
 
         public static bool VerifyBlock(Block block)
         {
-            if (Block.HashBlock(block.PrevHash, block.Data, block.Timestamp) == block.Signature)
+            if (HashBlock(block.PrevHash, block.Data, block.Timestamp) == block.Signature)
             {
                 return true;
             }
-            else
-            {
-                return false;
-            }
+            return false;
         }
 
 
