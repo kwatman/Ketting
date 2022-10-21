@@ -51,14 +51,11 @@ namespace Ketting
 
         public static bool VerifyBlock(Block block)
         {
-            if (Block.HashBlock(block.PrevHash, block.Data, block.Timestamp) == block.Signature)
+            if (HashBlock(block.PrevHash, block.Data, block.Timestamp) == block.Signature)
             {
                 return true;
             }
-            else
-            {
-                return false;
-            }
+            return false;
         }
 
 

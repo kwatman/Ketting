@@ -8,8 +8,8 @@ public class KetKoin : Ketting.Ketting
 {
     public int TransactionMin { get; set; }
     public KeyPair NodeKeys { get; set; }
-    public List<Transaction> TransactionPool { get; set; }
-    public new List<Block>  BlockChain { get; set; }
+    public static List<Transaction> TransactionPool { get; set; }
+    public static List<Block>  BlockChain { get; set; }
 
     public void SetKeys(Byte[] privateKey, Byte[] publicKey)
     {
@@ -37,5 +37,12 @@ public class KetKoin : Ketting.Ketting
         block.Signature = Convert.ToBase64String(NodeKeys.Sign(Convert.FromBase64String(Convert.ToBase64String(Encoding.UTF8.GetBytes(block.Hash)))));
         return block;
     }
-    
+
+    public void AddTransactionToPool(Transaction transaction)
+    {
+        if (transaction.Verify())
+        {
+            TransactionPool.Add(transaction);
+        }
+    }
 }
