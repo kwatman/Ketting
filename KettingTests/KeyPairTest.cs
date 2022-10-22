@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Linq;
 using Ketting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Security.Cryptography;
@@ -32,5 +33,17 @@ public class KeyPairTest
         
         Assert.IsFalse(KeyPair.Verify(keyPair1.rsa.ExportParameters(false),signedData2,data));
         Assert.IsFalse(KeyPair.Verify(keyPair2.rsa.ExportParameters(false),signedData,data2));
+    }
+
+    [TestMethod]
+    public void SetKeysTest()
+    {
+        KeyPair wallet1 = new KeyPair();
+        KeyPair wallet2 = new KeyPair();
+
+        wallet2.PrivateKey = wallet1.PrivateKey;
+
+        Assert.IsTrue(wallet1.PrivateKey.SequenceEqual(wallet2.PrivateKey));
+        Assert.IsTrue(wallet1.PublicKey.SequenceEqual(wallet2.PublicKey));
     }
 }

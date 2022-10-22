@@ -18,6 +18,7 @@ public class KetCoinChainTest
         ketCoin = new KetKoinChain();
         keyPair = new KeyPair();
         ketCoin.SetKeys(keyPair.rsa.ExportRSAPrivateKey(),keyPair.rsa.ExportRSAPublicKey());
+        Console.WriteLine("");
     }
     
     [TestMethod]
@@ -26,10 +27,26 @@ public class KetCoinChainTest
         KeyPair sender = new KeyPair();
         KeyPair reciever = new KeyPair();
 
-        Transaction transaction = new Transaction(10,sender.rsa.ExportRSAPublicKey(),sender.rsa.ExportRSAPrivateKey(),reciever.rsa.ExportRSAPublicKey());
+        Transaction transaction = new Transaction(10,sender.rsa.ExportRSAPublicKey(),sender.rsa.ExportRSAPrivateKey(),reciever.rsa.ExportRSAPublicKey(),1);
         Assert.IsTrue(ketCoin.AddTransactionToPool(transaction));
-        Transaction transaction2 = new Transaction(10,sender.rsa.ExportRSAPublicKey(),reciever.rsa.ExportRSAPrivateKey(),reciever.rsa.ExportRSAPublicKey());
+        Transaction transaction2 = new Transaction(10,sender.rsa.ExportRSAPublicKey(),reciever.rsa.ExportRSAPrivateKey(),reciever.rsa.ExportRSAPublicKey(),1);
         Assert.IsFalse(ketCoin.AddTransactionToPool(transaction2));
+    }
+
+    [TestMethod]
+    public void GetBalanceTest()
+    {
+        KeyPair wallet1 = new KeyPair();
+        KeyPair wallet2 = new KeyPair();
+        KeyPair wallet3 = new KeyPair();
+        KeyPair wallet4 = new KeyPair();
+
+        KetKoinChain.TransactionPool.Add(new Transaction(10, wallet1.PublicKey,wallet1.PrivateKey,wallet2.PublicKey,1));
+        KetKoinChain.TransactionPool.Add(new Transaction(50, wallet3.PublicKey,wallet3.PrivateKey,wallet4.PublicKey,1));
+        Block block = ketCoin.MintBlock();
+        KetKoinChain.BlockChain.Add(block);
+        Assert.AreEqual(10,KetKoinChain.GetBalance(wallet2.PublicKey));
+        Assert.AreEqual(50,KetKoinChain.GetBalance(wallet4.PublicKey));
     }
 }
 
