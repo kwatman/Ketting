@@ -13,10 +13,10 @@ public class TransactionTest
         KeyPair sender = new KeyPair();
         KeyPair reciever = new KeyPair();
 
-        Transaction transaction = new Transaction(10,sender.rsa.ExportRSAPublicKey(),sender.rsa.ExportRSAPrivateKey(),reciever.rsa.ExportRSAPublicKey());
+        Transaction transaction = new Transaction(10,sender.rsa.ExportRSAPublicKey(),sender.rsa.ExportRSAPrivateKey(),reciever.rsa.ExportRSAPublicKey(),1);
         Assert.IsTrue(transaction.Verify());
         
-        Transaction fraudTransaction = new Transaction(10,sender.rsa.ExportRSAPublicKey(),reciever.rsa.ExportRSAPrivateKey(),reciever.rsa.ExportRSAPublicKey());
+        Transaction fraudTransaction = new Transaction(10,sender.rsa.ExportRSAPublicKey(),reciever.rsa.ExportRSAPrivateKey(),reciever.rsa.ExportRSAPublicKey(),1);
         Assert.IsFalse(fraudTransaction.Verify());
     }
 }

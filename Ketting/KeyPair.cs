@@ -6,9 +6,35 @@ public class KeyPair
 {
     public const int KEYSIZE = 2048;
     public RSA rsa { get; set; }
+
+    public Byte[] PublicKey
+    {
+        get
+        {
+            return rsa.ExportRSAPublicKey();
+        }
+        set
+        {
+            rsa.ImportRSAPublicKey(value,out _);
+        }
+    }
+    
+    public Byte[] PrivateKey
+    {
+        get
+        {
+            return rsa.ExportRSAPrivateKey();
+        }
+        set
+        {
+            rsa.ImportRSAPrivateKey(value,out _);
+        }
+    }
+    
     public KeyPair()
     {
         rsa = RSA.Create(KEYSIZE);
+        Console.WriteLine("");
     }
 
     public KeyPair(string publicKey)

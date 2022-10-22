@@ -18,6 +18,11 @@ namespace Ketting
         public string Hash { get; set; }
         public string Signature { get; set; }
 
+        public Block()
+        {
+            Data = new List<BlockData>();
+        }
+
         /*@
         public int HashBlock(string prevHash, string data, DateTime timestamp)
         {
