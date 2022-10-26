@@ -31,5 +31,16 @@ namespace KetKoin
 
             return totalStakePerSender.MaxBy(t => t.Value).Key;
         }
+
+        public static bool AddStake(float amount, Byte[] senderPublicKey, Byte[] senderPrivateKey, int transactionNumber)
+        {
+            Transaction transaction = new Transaction(amount, senderPublicKey, senderPrivateKey, null, transactionNumber, Type.Stake);
+            if (transaction.Verify())
+            {
+                KetKoinChain.TransactionPool.Add(transaction);
+                return true;
+            }
+            return false;
+        }
     }
 }
