@@ -13,7 +13,7 @@ namespace KettingTests;
 public class StakeTest
 {
     [TestMethod]
-    public void GetMaxTest()
+    public void GetHighestStakeTest()
     {
         KeyPair sender = new KeyPair();
         KeyPair reciever = new KeyPair();
@@ -22,13 +22,17 @@ public class StakeTest
         Transaction transaction2 = new Transaction(20, reciever.rsa.ExportRSAPublicKey(), reciever.rsa.ExportRSAPrivateKey(), sender.rsa.ExportRSAPublicKey(), 1, KetKoin.Type.Stake);
         Transaction transaction3 = new Transaction(15, sender.rsa.ExportRSAPublicKey(), sender.rsa.ExportRSAPrivateKey(), reciever.rsa.ExportRSAPublicKey(), 1, KetKoin.Type.Stake);
 
-        Block block = new Block();
-        block.Data.Add(transaction2);
-        block.Data.Add(transaction);
-        block.Data.Add(transaction3);
+        Block block1 = new Block();
+        Block block2 = new Block();
+        block2.Data.Add(transaction2);
+        block1.Data.Add(transaction);
+        block2.Data.Add(transaction3);
+
+        KetKoinChain.BlockChain.Add(block1);
+        KetKoinChain.BlockChain.Add(block2);
 
         Stake stake = new Stake();
-        Byte[] result = stake.GetHighestTotalStakeFromBlock(block);
+        Byte[] result = stake.GetHighestStake();
         Assert.IsTrue(reciever.rsa.ExportRSAPublicKey().SequenceEqual(result));
     }
 }
