@@ -27,6 +27,7 @@ public class StakeTest
         block2.Data.Add(transaction2);
         block1.Data.Add(transaction);
         block2.Data.Add(transaction3);
+        block1.AmountOfStakers = 4;
 
         KetKoinChain.BlockChain.Add(block1);
         KetKoinChain.BlockChain.Add(block2);

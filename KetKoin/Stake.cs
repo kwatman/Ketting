@@ -10,6 +10,7 @@ namespace KetKoin
 {
     public class Stake
     {
+        // Amount of blocks person is not allowed to validate another block = floor(amount of stakers / 2)
         // Get the address with the highest stake
         public Byte[] GetHighestStake()
         {
@@ -17,15 +18,17 @@ namespace KetKoin
             List<Block> orderedBlockchain = KetKoinChain.BlockChain.OrderBy(b => b.Timestamp).ToList();
 
             // Just trust me, it works
-            foreach(Block block in orderedBlockchain)
+            for(int i = 0; i < orderedBlockchain.Count; i++)
             {
-                foreach (Transaction transaction in block.Data
+                foreach (Transaction transaction in orderedBlockchain[i].Data
                 .Where(t => t.GetType() == typeof(Transaction))
-                .Where(t => ((Transaction)t).Type == Type.Stake)
+                .Where(t => ((Transaction) t).Type == Type.Stake)
                 .ToList())
                 {
-                    if (!totalStakePerSender.ContainsKey(transaction.SenderKey))
-                        totalStakePerSender.Add(transaction.SenderKey, transaction.Amount);                        
+                    if (!totalStakePerSender.ContainsKey(transaction.SenderKey) && Math.Floor((double) (orderedBlockchain[i].AmountOfStakers / 2)) < i)
+                    {
+                         totalStakePerSender.Add(transaction.SenderKey, transaction.Amount);
+                    }
                 }
             }
 
@@ -35,11 +38,13 @@ namespace KetKoin
         public static bool AddStake(float amount, Byte[] senderPublicKey, Byte[] senderPrivateKey, int transactionNumber)
         {
             Transaction transaction = new Transaction(amount, senderPublicKey, senderPrivateKey, null, transactionNumber, Type.Stake);
+            
             if (transaction.Verify())
             {
                 KetKoinChain.TransactionPool.Add(transaction);
                 return true;
             }
+            
             return false;
         }
     }
