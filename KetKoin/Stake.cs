@@ -25,7 +25,12 @@ namespace KetKoin
                 .Where(t => ((Transaction) t).Type == Type.Stake)
                 .ToList())
                 {
-                    if (!totalStakePerSender.ContainsKey(transaction.SenderKey) && Math.Floor((double) (orderedBlockchain[i].AmountOfStakers / 2)) < i)
+                    if (!totalStakePerSender.ContainsKey(transaction.SenderKey) 
+                        && (
+                            (Math.Floor((double) (orderedBlockchain[i].AmountOfStakers / 2)) < i 
+                            && orderedBlockchain[i].PublicKey == Encoding.Default.GetString(transaction.SenderKey))
+                            || orderedBlockchain[i].PublicKey != Encoding.Default.GetString(transaction.SenderKey))
+                        )
                     {
                          totalStakePerSender.Add(transaction.SenderKey, transaction.Amount);
                     }
