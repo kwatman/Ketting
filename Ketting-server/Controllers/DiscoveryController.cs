@@ -1,4 +1,4 @@
-﻿using Ketting_server.Models;
+﻿using Ketting_server.Dto;
 using Ketting_server.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,25 +13,22 @@ public class DiscoveryController : ControllerBase
         discoveryService = _discoveryService;
     }
     
-    [Route("/discovery/connect/{ip}")]
-    public async Task<Response> Connect(string ip)
+    [Route("/discovery/connect")]
+    [HttpPost]
+    public async Task<ConnectionsShareDto> Connect([FromBody] ConnectionsShareDto connectionsShare)
     {
-        HttpClient client = new HttpClient();
-        var response = await client.GetStringAsync("https://" +ip +"/discovery/handshake");
+        // HttpClient client = new HttpClient();
+        // var response = await client.GetStringAsync("https://" +ip +"/discovery/handshake");
+        
+        connectionsShare.connections = discoveryService.connections.ToList();
 
-        if (response == "Accepted")
+        if (discoveryService.connections.Count < 10)
         {
-            discoveryService.connections.Add(ip);
-            return new Response();
+            discoveryService.connections.Add(connectionsShare.ip);
         }
-        return new Response();
+
+        return connectionsShare;
     }
-    
-    [Route("/discovery/handshake")]
-    public async Task<string> Handshake()
-    {
-        return ConnectionResult.Accepted.ToString();
-    }
-    
-    
+
+
 }

@@ -17,7 +17,7 @@ public class KetKoinChain : KettingChain
         BlockChain = new List<Block>();
     }
     
-    public void SetKeys(Byte[] privateKey, Byte[] publicKey)
+    public void SetKeys(Byte[] privateKey)
     {
 
         NodeKeys.PrivateKey = privateKey;

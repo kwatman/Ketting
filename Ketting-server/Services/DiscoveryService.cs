@@ -4,6 +4,12 @@ public class DiscoveryService
 {
     public List<string> connections { get; set; }
 
+
+    public DiscoveryService()
+    {
+        connections = new List<string>();
+    }
+    
     public async void DiscoverConnections()
     {
         if (connections.Count < 20)

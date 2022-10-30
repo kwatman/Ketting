@@ -12,8 +12,16 @@ public class Transaction : BlockData
     public Byte[] SenderKey { get; set; }
     public Byte[] RecieverKey { get; set; }
     public string Signature { get; set; }
-
-
+    
+    public Transaction(int amount, Byte[] senderKey, Byte[] recieverKey,int transactionNumber,string signature)
+    {
+        TransactionNumber = transactionNumber;
+        Amount = amount;
+        SenderKey = senderKey;
+        RecieverKey = recieverKey;
+        TimeStamp = DateTime.Now;
+        Signature = signature;
+    }
     public Transaction(int amount, Byte[] senderKey, Byte[] senderPrivateKey, Byte[] recieverKey,int transactionNumber)
     {
         TransactionNumber = transactionNumber;
@@ -21,7 +29,7 @@ public class Transaction : BlockData
         SenderKey = senderKey;
         RecieverKey = recieverKey;
         TimeStamp = DateTime.Now;
-        string data = senderKey + "@" + recieverKey + "@" + amount + "@" + TimeStamp;
+        string data = senderKey + "@" + recieverKey + "@" + amount + "@" + TimeStamp.ToShortDateString();
 
         int keyLength = 2048;
         RSA sender = RSA.Create();
@@ -35,7 +43,7 @@ public class Transaction : BlockData
         bool correct = true;
         RSA rsaVerify = RSA.Create();
         rsaVerify.ImportRSAPublicKey(SenderKey,out _);
-        string originalData = SenderKey + "@" + RecieverKey + "@" + Amount + "@" + TimeStamp;
+        string originalData = SenderKey + "@" + RecieverKey + "@" + Amount + "@" + TimeStamp.ToShortDateString();
         if (!rsaVerify.VerifyData(Convert.FromBase64String(Convert.ToBase64String(Encoding.UTF8.GetBytes(originalData))),
                 Convert.FromBase64String(Signature), HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1))
         {
