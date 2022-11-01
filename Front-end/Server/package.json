@@ -1,0 +1,17 @@
+{
+  "name": "ketting",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "a blockchain mad by students",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo",
+    "start": "node server.js"
+  },
+  "author": "2gdpd4 students ucll",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "express": "^4.18.2",
+    "jquery": "^3.6.0"
+  }
+}
