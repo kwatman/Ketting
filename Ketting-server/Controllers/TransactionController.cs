@@ -18,6 +18,7 @@ public class TransactionController : ControllerBase
     [HttpPost]
     public async Task AddTransaction([FromBody] TransactionDto transactionDto)
     {
+        Console.WriteLine("Recieved transaction");
         blockChainService.AddTransaction(transactionDto);
     }
     

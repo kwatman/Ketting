@@ -1,4 +1,5 @@
 ﻿using KetKoin;
+using Ketting;
 using Ketting_server.Dto;
 
 namespace Ketting_server.Services;
@@ -15,5 +16,10 @@ public class BlockChainService
     public void AddTransaction(TransactionDto transaction)
     {
         KetKoinChain.AddTransactionToPool(transaction.ToObject());
+    }
+
+    public void GetNewChain(string connection)
+    {
+        
     }
 }
