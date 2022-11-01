@@ -92,6 +92,7 @@ public class KetKoinChain : KettingChain
         return false;
     }
 
+    //TODO needs to be tested
     public List<Transaction> GetWalletTransactions(Byte[] publicKey)
     {
         List<Transaction> transactions = new List<Transaction>();

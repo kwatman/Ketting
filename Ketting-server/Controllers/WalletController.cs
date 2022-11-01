@@ -28,7 +28,12 @@ public class WalletController : ControllerBase
         WalletDto wallet = new WalletDto();
         wallet.Address = publicKey;
         wallet.Balance = KetKoinChain.GetBalance(Convert.FromBase64String(publicKey));
-        
+        foreach (Transaction transaction in blockChainService.KetKoinChain.GetWalletTransactions(Convert.FromBase64String(publicKey)))
+        {
+            TransactionDto transactionDto = new TransactionDto();
+            transactionDto.FromObject(transaction);
+            wallet.Transactions.Add(transactionDto);
+        }
         return wallet;
     }
 }
