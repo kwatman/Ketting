@@ -1,0 +1,27 @@
+version: '3.4'
+services:
+  container1:
+    image: ketkoinserver
+    #environment:
+    ports:
+      - '2400:80'
+    expose:
+      - '80'   
+    networks:
+      - ketkoin-network
+      
+  container2:
+    image: ketkoinserver
+    environment:
+      initial_conection: "192.168.0.248:2400"
+      base_url: "192.168.0.248:2401"
+    ports:
+      - '2401:80'
+    expose:
+      - '80'
+    networks:
+      - ketkoin-network
+        
+networks:
+  ketkoin-network:
+    external: true

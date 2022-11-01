@@ -17,7 +17,7 @@ public class KetCoinChainTest
     {
         ketCoin = new KetKoinChain();
         keyPair = new KeyPair();
-        ketCoin.SetKeys(keyPair.rsa.ExportRSAPrivateKey(),keyPair.rsa.ExportRSAPublicKey());
+        ketCoin.SetKeys(keyPair.rsa.ExportRSAPrivateKey());
         Console.WriteLine("");
     }
     

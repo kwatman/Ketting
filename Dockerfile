@@ -6,6 +6,8 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY ["Ketting-server/Ketting-server.csproj", "Ketting-server/"]
+COPY ["KetKoin/KetKoin.csproj", "KetKoin/"]
+COPY ["Ketting/Ketting.csproj", "Ketting/"]
 RUN dotnet restore "Ketting-server/Ketting-server.csproj"
 COPY . .
 WORKDIR "/src/Ketting-server"

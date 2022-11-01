@@ -1,3 +1,4 @@
+using System.Net;
 using Ketting_server.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,8 +9,11 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddSingleton(new DiscoveryService());
+DiscoveryService discoveryService = new DiscoveryService();
+
+builder.Services.AddSingleton(discoveryService);
 builder.Services.AddSingleton<BlockChainService>();
+builder.Services.AddSingleton<BroadcastService>();
 
 var app = builder.Build();
 
@@ -20,11 +24,20 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+Console.WriteLine(Environment.GetEnvironmentVariable("INITC"));
 app.UseSwagger();
 app.UseSwaggerUI();
 
-//discoveryService.DiscoverConnections();
-    
+ServicePointManager.ServerCertificateValidationCallback += (sender, certificate, chain, errors) =>
+{
+    return true;
+};
+
+if (Environment.GetEnvironmentVariable("initial_conection") != null)
+{
+    discoveryService.DiscoverConnections(Environment.GetEnvironmentVariable("initial_conection"));
+}
+
 app.UseHttpsRedirection();
 
 app.MapControllers();

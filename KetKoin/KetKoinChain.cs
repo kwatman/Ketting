@@ -77,7 +77,7 @@ public class KetKoinChain : KettingChain
         }
         if(ammountOfTransactions != 0)
         {
-            throw new Exception("Invalid count! balance counting loop has ended but not all tranasctions have been found");
+            throw new Exception("Invalid count! balance counting loop has ended but not all transactions have been found");
         }
         return balance;
     }
@@ -91,4 +91,23 @@ public class KetKoinChain : KettingChain
         }
         return false;
     }
+
+    public List<Transaction> GetWalletTransactions(Byte[] publicKey)
+    {
+        List<Transaction> transactions = new List<Transaction>();
+        List<Block> orderedBlockchain = BlockChain.OrderBy(b => b.Timestamp).ToList();
+        foreach (Block block in orderedBlockchain)
+        {
+            foreach (Transaction transaction in block.Data)
+            {
+                if (transaction.RecieverKey.SequenceEqual(publicKey) || transaction.SenderKey.SequenceEqual(publicKey))
+                {
+                    transactions.Add(transaction);
+                }
+            }
+        }
+
+        return transactions;
+    }
+    
 }
