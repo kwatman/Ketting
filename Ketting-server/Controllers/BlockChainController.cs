@@ -34,4 +34,11 @@ public class BlockChainController : ControllerBase
         
         return blocks;
     }
+    [Route("/blockchain/block")]
+    [HttpPost]
+    public async void AddNewBlock([FromBody] BlockDto blocksDto)
+    {
+        Block block = blocksDto.ToObject();
+        blockChainService.KetKoinChain.AddBlock(block);
+    }
 }

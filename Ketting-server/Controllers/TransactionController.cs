@@ -20,5 +20,18 @@ public class TransactionController : ControllerBase
     {
         Console.WriteLine("Recieved transaction");
         blockChainService.AddTransaction(transactionDto);
+        if (KetKoinChain.TransactionPool.Count >= 5)
+        {
+            Console.WriteLine("Starting minting proccess");
+            if (Stake.GetHighestStake() == blockChainService.KetKoinChain.NodeKeys.PublicKey)
+            {
+                Console.WriteLine("Im the leader! Minting new block");
+                blockChainService.KetKoinChain.MintBlock();
+            }
+            else
+            {
+                Console.WriteLine("Im not the leader.");
+            }
+        }
     }
 }

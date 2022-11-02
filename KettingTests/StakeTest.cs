@@ -33,7 +33,7 @@ public class StakeTest
         KetKoinChain.BlockChain.Add(block2);
 
         Stake stake = new Stake();
-        Byte[] result = stake.GetHighestStake();
+        Byte[] result = Stake.GetHighestStake();
         Assert.IsTrue(reciever.rsa.ExportRSAPublicKey().SequenceEqual(result));
     }
 

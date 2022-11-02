@@ -19,22 +19,14 @@ public class KetKoinChain : KettingChain
     
     public void SetKeys(Byte[] privateKey)
     {
-
         NodeKeys.PrivateKey = privateKey;
     }
     
     public Block MintBlock()
     {
         Block block = new Block();
-        if (BlockChain.Count > 0)
-        { 
-            block.PrevHash = BlockChain.MaxBy(b => b.Timestamp).Signature;   
-        }
-        else
-        {
-            block.PrevHash = "genesis";
-        }
-        for (int i = 0; i < 10; i++)
+        block.PrevHash = BlockChain.MaxBy(b => b.Timestamp).Signature;
+        for (int i = 0; i < 5; i++)
         {
             if (TransactionPool.Count > 0)
             {
@@ -49,6 +41,7 @@ public class KetKoinChain : KettingChain
         block.Timestamp = DateTime.Now;
         block.PublicKey = Convert.ToBase64String(NodeKeys.rsa.ExportRSAPublicKey());
         block.Hash = Block.HashBlock(block.PrevHash, block.Data, block.Timestamp);
+        block.AmountOfStakers = Stake.GetAmountOfStakers();
         block.Signature = Convert.ToBase64String(NodeKeys.Sign(Convert.FromBase64String(Convert.ToBase64String(Encoding.UTF8.GetBytes(block.Hash)))));
         return block;
     }
@@ -110,5 +103,16 @@ public class KetKoinChain : KettingChain
 
         return transactions;
     }
-    
+
+    public bool AddBlock(Block block)
+    {
+        if (Block.VerifyBlock(block))
+        {
+            if (Convert.FromBase64String(block.PublicKey).SequenceEqual(Stake.GetHighestStake()))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
 }

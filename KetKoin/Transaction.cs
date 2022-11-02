@@ -33,7 +33,7 @@ public class Transaction : BlockData
         RecieverKey = recieverKey;
         TimeStamp = DateTime.Now;
         Type = type;
-        string data = senderKey + "@" + recieverKey + "@" + amount + "@" + TimeStamp.ToShortDateString();
+        string data = senderKey + "@" + recieverKey + "@" + amount + "@" + TimeStamp;
 
         int keyLength = 2048;
         RSA sender = RSA.Create();

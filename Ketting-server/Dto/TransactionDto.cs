@@ -11,7 +11,7 @@ public class TransactionDto
     public string SenderKey { get; set; }
     public string RecieverKey { get; set; }
     public string Signature { get; set; }
-    public Type Type { get; set; }
+    public int Type { get; set; }
     public void FromObject(Transaction transaction)
     {
         TransactionNumber = transaction.TransactionNumber;
@@ -20,7 +20,7 @@ public class TransactionDto
         SenderKey = Convert.ToBase64String(transaction.SenderKey);
         RecieverKey =  Convert.ToBase64String(transaction.RecieverKey);
         Signature = transaction.Signature;
-        Type = transaction.Type;
+        Type = (int) transaction.Type;
     }
 
     public Transaction ToObject()
@@ -30,7 +30,7 @@ public class TransactionDto
             Convert.FromBase64String(RecieverKey),
             TransactionNumber,
             Signature,
-            Type
+            (Type) Type
             );
         return transaction;
     }

@@ -2,7 +2,8 @@ version: '3.4'
 services:
   container1:
     image: ketkoinserver
-    #environment:
+    environment:
+      privateKey: "MIIEpQIBAAKCAQEAwFyqYjRjIzDYWsxLz4T+kIzH68JwpbbncGLu1wcDACNshYPkI2hOeLGpXGAVMLDRp3ugGYaNQZY61L5hgcXi9vHILEO1Auh7hO443ZJOHdkKZxMhbsDzBHieQUJ4R/XlvhCxTAyoyCie3psOjSr7HFMaxw+n8V4yI1HdR7zLE9pWUV6nqn/Fh8+/yGjrIk4BRu7TV761M/Yx4pvIVHShJPF8frIYV9enCOSk3O5d5oUHanBNEkU9Z6j/RBOG72lotrqs/tBZpuAq+u6+dHGDeIPRcYdejRYi6xJ6I7QtJtmS2OcpdttqPdcUWB/h0irhTGI13HoClVBydSoP49pWOQIDAQABAoIBAQCTKdGIFAAMOiArRsRw3JRMTgfczAKWJNnm1ylWBB09i9xIQODWXcQ6/eBNtYxAleWvNhsDrDaBCMe1XnkGaTf8KHk1tA7VTLrCteV3TajJmPQmazJWovLIZubbklim5O6AfBDH15+AkeMI9qMpSMqXntSLmeSn+aJt9wFNEphidIGmV47McX8vD7JNhWPg3dTrjkRuQDEaTA3hIkFlnc1xRzJMtLYua9H3VjwlqEZv3Mj5ZveQ82oScjuKpQ7MB8RR8Feh1MHa+/CGvR+zV40bjh7sdOdwCrsB5peZihFrrsMjCo8LcOyqBJfzgQTr2Exz3p1IZreyiovTnW7c5XvJAoGBAODL5sN6JtU/FdrKKcMi3oAv70Cy2P0EbJJ/mBtkEM3AHYoDwmXcJ51CFCwq2V6IDK2rzlf3VBWmT/1PaG2gKQg05v89GyHAZQR0YrqPx6Nrjcms044SyiLjKsMvwqJYh+9NBMtFSvQ12se6+UL3Q17gNx23qXfvZznEUPLspqs3AoGBANsQNcjSOT43woQ64DW4njwPo8dlTiDdUPyqZ4tc/Im9oGkKNpALCoXqbp/eY5EXRv4aVcW5C+pNIB4gKumtFcBGaUDeALnjSSqJDPUif/vpu/apHwS/Rt5Rhi8lMmHg1P0/fcAf+s5uGOcZA+XvZKn410J3ctkB04o1/lfN7yIPAoGAXNW4Kjgy+1P/OYjNsGmhC71ACC8UD4GZOPL6pS0xB1d0m3+r85b0wSv92rOjazeyTLKsF4XrsrkpRYparRM8fsgiMXxRzSGAVlOeRj+EicesGYKHJ6A43CmGim8Z6SO4l6nt9eha6PmorV1Y/T/SEcd024/yq7Yxohih+YCj4AcCgYEAullxx2G9vEWmvOFwtYJVaPZM9mQhMCfUqvsylgUF9w5OlMxRWftqejzQ2kJOJLDOfX5dlJMzpZ7yQW5P0vSgWi4Lf1ja+UZ1iS+IzEcK5HsSoGOBtYIZgSmMojJcR5MA3GXUTUlnC4/wszY+cK1SzpyWUT5Xfm7lSt9fe8X9NNUCgYEAhC/ZH6bxU/QwNRluic+yGL4T+Qzs2/dpKU8UMrwOdGtF8WTmJ16xtCCiUT4NfL9uCfyEF5E8ti1yryaZMIu9VuTJrt9Bs/7J5K4N8a6kY3a/yrAnFGjPE1gYQd/GyEWD/Fz/zmdCRa5JqMATLN5DlMeLGBiQRV9BNaexJMSU8YY="
     ports:
       - '2400:80'
     expose:
@@ -17,6 +18,46 @@ services:
       base_url: "192.168.0.248:2401"
     ports:
       - '2401:80'
+    expose:
+      - '80'
+    networks:
+      - ketkoin-network
+    depends_on:
+      - "container1"
+      
+  container3:
+    image: ketkoinserver
+    environment:
+      initial_conection: "192.168.0.248:2400"
+      base_url: "192.168.0.248:2402"
+    ports:
+      - '2402:80'
+    expose:
+      - '80'
+    networks:
+      - ketkoin-network
+    depends_on:
+      - "container1"
+      
+  container4:
+    image: ketkoinserver
+    environment:
+      initial_conection: "192.168.0.248:2400"
+      base_url: "192.168.0.248:2403"
+    ports:
+      - '2403:80'
+    expose:
+      - '80'
+    networks:
+      - ketkoin-network
+      
+  container5:
+    image: ketkoinserver
+    environment:
+      initial_conection: "192.168.0.248:2400"
+      base_url: "192.168.0.248:2404"
+    ports:
+      - '2404:80'
     expose:
       - '80'
     networks:

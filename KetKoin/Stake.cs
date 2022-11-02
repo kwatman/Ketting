@@ -64,7 +64,6 @@ namespace KetKoin
                 KetKoinChain.TransactionPool.Add(transaction);
                 return true;
             }
-            
             return false;
         }
     }

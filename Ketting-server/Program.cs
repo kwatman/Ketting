@@ -18,6 +18,8 @@ builder.Services.AddSingleton(discoveryService);
 builder.Services.AddSingleton(blockChainService);
 builder.Services.AddSingleton<BroadcastService>();
 
+builder.Services.AddHostedService<ConnectionService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -51,11 +53,14 @@ else
     Console.WriteLine(app.Configuration["GenesisKey"]);
     Byte[] bytes = new Byte[0];
     Transaction transaction = new Transaction(50000,bytes, Convert.FromBase64String(app.Configuration["GenesisKey"]),1,"genesis",Type.Transaction);
+    Transaction stake = new Transaction(1000,bytes, Convert.FromBase64String(app.Configuration["GenesisKey"]),1,"genesis",Type.Stake);
     block.Data.Add(transaction);
+    block.Data.Add(stake);
     block.Timestamp = new DateTime(2022, 11, 2);
     block.PublicKey = app.Configuration["GenesisKey"];
     block.Hash = "genesis";
     block.Signature = "genesis";
+    block.AmountOfStakers = 0;
     KetKoinChain.BlockChain.Add(block);    
 }
 

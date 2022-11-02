@@ -11,9 +11,9 @@ public class BlockChainService
     {
         KetKoinChain = new KetKoinChain();
         KeyPair keyPair = new KeyPair();
-        if (configuration["privateKey"] != null)
+        if (Environment.GetEnvironmentVariable("privateKey") != null)
         {
-            KetKoinChain.SetKeys(Convert.FromBase64String(configuration["privateKey"]));
+            KetKoinChain.SetKeys(Convert.FromBase64String(Environment.GetEnvironmentVariable("privateKey")));
         }
         else
         {
@@ -28,15 +28,24 @@ public class BlockChainService
 
     public async void GetNewChain(string connection)
     {
-        HttpClient client = new HttpClient();
-        var response =  await client.GetAsync("http://" + connection + "/blockchain");
-        List<BlockDto> blockDtos = await response.Content.ReadFromJsonAsync<List<BlockDto>>();
-
-        List<Block> blocks = new List<Block>();
-        foreach (BlockDto block in blockDtos)
+        try
         {
-            blocks.Add(block.ToObject());
+            HttpClient client = new HttpClient();
+            var response = await client.GetAsync("http://" + connection + "/blockchain");
+            List<BlockDto> blockDtos = await response.Content.ReadFromJsonAsync<List<BlockDto>>();
+
+            List<Block> blocks = new List<Block>();
+            foreach (BlockDto block in blockDtos)
+            {
+                blocks.Add(block.ToObject());
+            }
+
+            KetKoinChain.BlockChain = blocks;
         }
-        KetKoinChain.BlockChain = blocks;
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+        }
+
     }
 }
