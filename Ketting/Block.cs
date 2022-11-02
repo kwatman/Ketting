@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using Ketting;
 
 
 namespace Ketting
@@ -56,8 +57,21 @@ namespace Ketting
 
         public static bool VerifyBlock(Block block)
         {
-            if (HashBlock(block.PrevHash, block.Data, block.Timestamp) == block.Signature)
+            RSA rsaVerify = RSA.Create();
+            rsaVerify.ImportRSAPublicKey(Convert.FromBase64String(block.PublicKey),out _);
+            //HashBlock(block.PrevHash, block.Data, block.Timestamp)
+            if (rsaVerify.VerifyData(Convert.FromBase64String(Convert.ToBase64String(Encoding.UTF8.GetBytes(Block.HashBlock(block.PrevHash,block.Data,block.Timestamp)))),
+                    Convert.FromBase64String(block.Signature),
+                    HashAlgorithmName.SHA256, 
+                    RSASignaturePadding.Pkcs1))
             {
+                foreach (BlockData blockData in block.Data)
+                {
+                    if (!blockData.Verify())
+                    {
+                        return false;
+                    }
+                }
                 return true;
             }
             return false;

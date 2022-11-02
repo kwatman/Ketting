@@ -10,7 +10,15 @@ public class BlockChainService
     public BlockChainService(IConfiguration configuration)
     {
         KetKoinChain = new KetKoinChain();
-        KetKoinChain.SetKeys(Convert.FromBase64String(configuration["privateKey"]));
+        KeyPair keyPair = new KeyPair();
+        if (configuration["privateKey"] != null)
+        {
+            KetKoinChain.SetKeys(Convert.FromBase64String(configuration["privateKey"]));
+        }
+        else
+        {
+            KetKoinChain.SetKeys(keyPair.PrivateKey);
+        }
     }
 
     public void AddTransaction(TransactionDto transaction)
@@ -18,8 +26,17 @@ public class BlockChainService
         KetKoinChain.AddTransactionToPool(transaction.ToObject());
     }
 
-    public void GetNewChain(string connection)
+    public async void GetNewChain(string connection)
     {
-        
+        HttpClient client = new HttpClient();
+        var response =  await client.GetAsync("http://" + connection + "/blockchain");
+        List<BlockDto> blockDtos = await response.Content.ReadFromJsonAsync<List<BlockDto>>();
+
+        List<Block> blocks = new List<Block>();
+        foreach (BlockDto block in blockDtos)
+        {
+            blocks.Add(block.ToObject());
+        }
+        KetKoinChain.BlockChain = blocks;
     }
 }

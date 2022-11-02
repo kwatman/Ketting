@@ -13,6 +13,7 @@ public class Transaction : BlockData
     public Byte[] RecieverKey { get; set; }
     public string Signature { get; set; }
     
+    
     public Transaction(int amount, Byte[] senderKey, Byte[] recieverKey,int transactionNumber,string signature)
     {
         TransactionNumber = transactionNumber;

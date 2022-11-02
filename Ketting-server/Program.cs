@@ -1,4 +1,6 @@
 using System.Net;
+using KetKoin;
+using Ketting;
 using Ketting_server.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,9 +12,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 DiscoveryService discoveryService = new DiscoveryService();
-
+BlockChainService blockChainService = new BlockChainService(builder.Configuration);
 builder.Services.AddSingleton(discoveryService);
-builder.Services.AddSingleton<BlockChainService>();
+builder.Services.AddSingleton(blockChainService);
 builder.Services.AddSingleton<BroadcastService>();
 
 var app = builder.Build();
@@ -36,7 +38,27 @@ ServicePointManager.ServerCertificateValidationCallback += (sender, certificate,
 if (Environment.GetEnvironmentVariable("initial_conection") != null)
 {
     discoveryService.DiscoverConnections(Environment.GetEnvironmentVariable("initial_conection"));
+    blockChainService.GetNewChain(Environment.GetEnvironmentVariable("initial_conection"));
 }
+else
+{
+    //Setup genesis block
+    Block block = new Block();
+    block.PrevHash = "genesis";
+    block.Version = 1;
+
+    Console.WriteLine(app.Configuration["GenesisKey"]);
+    Byte[] bytes = new Byte[0];
+    Transaction transaction = new Transaction(50000,bytes, Convert.FromBase64String(app.Configuration["GenesisKey"]),1,"genesis");
+    block.Data.Add(transaction);
+    block.Timestamp = new DateTime(2022, 11, 2);
+    block.PublicKey = app.Configuration["GenesisKey"];
+    block.Hash = "genesis";
+    block.Signature = "genesis";
+    KetKoinChain.BlockChain.Add(block);    
+}
+
+
 
 app.UseHttpsRedirection();
 

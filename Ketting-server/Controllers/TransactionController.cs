@@ -21,6 +21,4 @@ public class TransactionController : ControllerBase
         Console.WriteLine("Recieved transaction");
         blockChainService.AddTransaction(transactionDto);
     }
-    
-
 }
