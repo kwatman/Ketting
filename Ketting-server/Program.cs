@@ -2,6 +2,7 @@ using System.Net;
 using KetKoin;
 using Ketting;
 using Ketting_server.Services;
+using Type = KetKoin.Type;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -49,7 +50,7 @@ else
 
     Console.WriteLine(app.Configuration["GenesisKey"]);
     Byte[] bytes = new Byte[0];
-    Transaction transaction = new Transaction(50000,bytes, Convert.FromBase64String(app.Configuration["GenesisKey"]),1,"genesis");
+    Transaction transaction = new Transaction(50000,bytes, Convert.FromBase64String(app.Configuration["GenesisKey"]),1,"genesis",Type.Transaction);
     block.Data.Add(transaction);
     block.Timestamp = new DateTime(2022, 11, 2);
     block.PublicKey = app.Configuration["GenesisKey"];

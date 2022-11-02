@@ -15,7 +15,7 @@ public class Transaction : BlockData
     public Type Type { get; set; }
     
     
-    public Transaction(int amount, Byte[] senderKey, Byte[] recieverKey,int transactionNumber,string signature,Type type)
+    public Transaction(float amount, Byte[] senderKey, Byte[] recieverKey,int transactionNumber,string signature,Type type)
     {
         TransactionNumber = transactionNumber;
         Amount = amount;
@@ -25,7 +25,7 @@ public class Transaction : BlockData
         Signature = signature;
         Type = type;
     }
-    public Transaction(int amount, Byte[] senderKey, Byte[] senderPrivateKey, Byte[] recieverKey,int transactionNumber,Type type)
+    public Transaction(float amount, Byte[] senderKey, Byte[] senderPrivateKey, Byte[] recieverKey,int transactionNumber,Type type)
     {
         TransactionNumber = transactionNumber;
         Amount = amount;
@@ -60,4 +60,10 @@ public class Transaction : BlockData
         }
         return correct;
     }
+}
+public enum Type
+{
+    Stake,
+    Transaction,
+    Validator_fee
 }
