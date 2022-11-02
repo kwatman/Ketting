@@ -21,9 +21,9 @@ public class BlockChainService
         }
     }
 
-    public void AddTransaction(TransactionDto transaction)
+    public bool AddTransaction(TransactionDto transaction)
     {
-        KetKoinChain.AddTransactionToPool(transaction.ToObject());
+        return KetKoinChain.AddTransactionToPool(transaction.ToObject());
     }
 
     public async void GetNewChain(string connection)

@@ -16,10 +16,14 @@ public class TransactionController : ControllerBase
     
     [Route("/transaction")]
     [HttpPost]
-    public async Task AddTransaction([FromBody] TransactionDto transactionDto)
+    public async Task<IActionResult> AddTransaction([FromBody] TransactionDto transactionDto)
     {
         Console.WriteLine("Recieved transaction");
-        blockChainService.AddTransaction(transactionDto);
+        bool success  = blockChainService.AddTransaction(transactionDto);
+        if (!success)
+        {
+            return BadRequest("the transaction was not vallid");
+        }
         if (KetKoinChain.TransactionPool.Count >= 5)
         {
             Console.WriteLine("Starting minting proccess");
@@ -33,5 +37,7 @@ public class TransactionController : ControllerBase
                 Console.WriteLine("Im not the leader.");
             }
         }
+
+        return Ok();
     }
 }
