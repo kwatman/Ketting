@@ -7,14 +7,15 @@ namespace KetKoin;
 public class Transaction : BlockData
 {
     public int TransactionNumber { get; set; }
-    public int Amount { get; set; }
+    public float Amount { get; set; }
     public DateTime TimeStamp { get; set; }
     public Byte[] SenderKey { get; set; }
     public Byte[] RecieverKey { get; set; }
     public string Signature { get; set; }
+    public Type Type { get; set; }
     
     
-    public Transaction(int amount, Byte[] senderKey, Byte[] recieverKey,int transactionNumber,string signature)
+    public Transaction(int amount, Byte[] senderKey, Byte[] recieverKey,int transactionNumber,string signature,Type type)
     {
         TransactionNumber = transactionNumber;
         Amount = amount;
@@ -22,14 +23,16 @@ public class Transaction : BlockData
         RecieverKey = recieverKey;
         TimeStamp = DateTime.Now;
         Signature = signature;
+        Type = type;
     }
-    public Transaction(int amount, Byte[] senderKey, Byte[] senderPrivateKey, Byte[] recieverKey,int transactionNumber)
+    public Transaction(int amount, Byte[] senderKey, Byte[] senderPrivateKey, Byte[] recieverKey,int transactionNumber,Type type)
     {
         TransactionNumber = transactionNumber;
         Amount = amount;
         SenderKey = senderKey;
         RecieverKey = recieverKey;
         TimeStamp = DateTime.Now;
+        Type = type;
         string data = senderKey + "@" + recieverKey + "@" + amount + "@" + TimeStamp.ToShortDateString();
 
         int keyLength = 2048;
@@ -44,7 +47,7 @@ public class Transaction : BlockData
         bool correct = true;
         RSA rsaVerify = RSA.Create();
         rsaVerify.ImportRSAPublicKey(SenderKey,out _);
-        string originalData = SenderKey + "@" + RecieverKey + "@" + Amount + "@" + TimeStamp.ToShortDateString();
+        string originalData = SenderKey + "@" + RecieverKey + "@" + Amount + "@" + TimeStamp;
         if (!rsaVerify.VerifyData(Convert.FromBase64String(Convert.ToBase64String(Encoding.UTF8.GetBytes(originalData))),
                 Convert.FromBase64String(Signature), HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1))
         {
