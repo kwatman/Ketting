@@ -10,34 +10,49 @@ namespace KetKoin
 {
     public class Stake
     {
-        // Amount of blocks person is not allowed to validate another block = floor(amount of stakers / 2)
         // Get the address with the highest stake
         public Byte[] GetHighestStake()
         {
-            Dictionary<Byte[], float> totalStakePerSender = new Dictionary<Byte[], float>();
-            List<Block> orderedBlockchain = KetKoinChain.BlockChain.OrderBy(b => b.Timestamp).ToList();
+            return GetStakePerSender().MaxBy(t => t.Value).Key;
+        }
 
-            // Just trust me, it works
-            for(int i = 0; i < orderedBlockchain.Count; i++)
+        // Get the amount of stakers for the current block
+        public int GetAmountOfStakers()
+        {
+            return GetStakePerSender().Count();
+        }
+
+        public Dictionary<Byte[], float> GetStakePerSender()
+        {
+            Dictionary<Byte[], float> stakePerSender = new Dictionary<Byte[], float>();
+            List<Block> orderedBlockchain = KetKoinChain.BlockChain.OrderBy(b => b.Timestamp).ToList();
+            List<Byte[]> publicKeys = new List<Byte[]>();
+
+            for (int i = 0; i < orderedBlockchain.Count; i++)
             {
-                foreach (Transaction transaction in orderedBlockchain[i].Data
+                Block block = orderedBlockchain[i];
+                publicKeys.Add(Convert.FromBase64String(Convert.ToBase64String(Encoding.UTF8.GetBytes(block.PublicKey))));
+
+                foreach (Transaction transaction in block.Data
                 .Where(t => t.GetType() == typeof(Transaction))
                 .Where(t => ((Transaction) t).Type == Type.Stake)
                 .ToList())
                 {
-                    if (!totalStakePerSender.ContainsKey(transaction.SenderKey) 
+                    if (!stakePerSender.ContainsKey(transaction.SenderKey)
                         && (
-                            (Math.Floor((double) (orderedBlockchain[i].AmountOfStakers / 2)) < i 
-                            && orderedBlockchain[i].PublicKey == Encoding.Default.GetString(transaction.SenderKey))
-                            || orderedBlockchain[i].PublicKey != Encoding.Default.GetString(transaction.SenderKey))
+                            (Math.Floor((double) (block.AmountOfStakers / 2)) < i
+                                && Convert.FromBase64String(Convert.ToBase64String(Encoding.UTF8.GetBytes(block.PublicKey))).SequenceEqual(transaction.SenderKey))
+                            || !Convert.FromBase64String(Convert.ToBase64String(Encoding.UTF8.GetBytes(block.PublicKey))).SequenceEqual(transaction.SenderKey)
+                            )
+                        && !publicKeys.Contains(transaction.SenderKey)
                         )
                     {
-                         totalStakePerSender.Add(transaction.SenderKey, transaction.Amount);
+                        stakePerSender.Add(transaction.SenderKey, transaction.Amount);
                     }
                 }
             }
 
-            return totalStakePerSender.MaxBy(t => t.Value).Key;
+            return stakePerSender;
         }
 
         public static bool AddStake(float amount, Byte[] senderPublicKey, Byte[] senderPrivateKey, int transactionNumber)
