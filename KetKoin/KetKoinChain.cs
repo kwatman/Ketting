@@ -53,9 +53,9 @@ public class KetKoinChain : KettingChain
         return block;
     }
 
-    public static int GetBalance(Byte[] walletPublicKey)
+    public static float GetBalance(Byte[] walletPublicKey)
     {
-        int balance = 0;
+        float balance = 0;
         bool foundLatestTransaction = false;
         int ammountOfTransactions = 0;
         List<Block> orderedBlockchain = BlockChain.OrderBy(b => b.Timestamp).ToList();

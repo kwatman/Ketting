@@ -7,20 +7,22 @@ namespace KetKoin;
 public class Transaction : BlockData
 {
     public int TransactionNumber { get; set; }
-    public int Amount { get; set; }
+    public float Amount { get; set; }
     public DateTime TimeStamp { get; set; }
     public Byte[] SenderKey { get; set; }
     public Byte[] RecieverKey { get; set; }
     public string Signature { get; set; }
+    public Type Type { get; set; }
 
 
-    public Transaction(int amount, Byte[] senderKey, Byte[] senderPrivateKey, Byte[] recieverKey,int transactionNumber)
+    public Transaction(float amount, Byte[] senderKey, Byte[] senderPrivateKey, Byte[] recieverKey,int transactionNumber, Type type)
     {
         TransactionNumber = transactionNumber;
         Amount = amount;
         SenderKey = senderKey;
         RecieverKey = recieverKey;
         TimeStamp = DateTime.Now;
+        Type = type;
         string data = senderKey + "@" + recieverKey + "@" + amount + "@" + TimeStamp;
 
         int keyLength = 2048;
@@ -48,4 +50,11 @@ public class Transaction : BlockData
         }
         return correct;
     }
+}
+
+public enum Type
+{
+    Stake,
+    Transaction,
+    Validator_fee
 }
