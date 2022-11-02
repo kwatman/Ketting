@@ -11,18 +11,18 @@ namespace KetKoin
     public class Stake
     {
         // Get the address with the highest stake
-        public Byte[] GetHighestStake()
+        public static Byte[] GetHighestStake()
         {
             return GetStakePerSender().MaxBy(t => t.Value).Key;
         }
 
         // Get the amount of stakers for the current block
-        public int GetAmountOfStakers()
+        public static int GetAmountOfStakers()
         {
             return GetStakePerSender().Count();
         }
 
-        public Dictionary<Byte[], float> GetStakePerSender()
+        public static Dictionary<Byte[], float> GetStakePerSender()
         {
             Dictionary<Byte[], float> stakePerSender = new Dictionary<Byte[], float>();
             List<Block> orderedBlockchain = KetKoinChain.BlockChain.OrderBy(b => b.Timestamp).ToList();
