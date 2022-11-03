@@ -1,38 +1,7 @@
 import Wallet from "./wallet.js"; 
 import Block from "./block.js";
 import WalletInfo from "./walletInfo.js";
-// FormatDate like 2022-11-02 21:03:05
-function FormatDate() {
 
-    var date = new Date();
-    var aaaa = date.getUTCFullYear();
-    var gg = date.getUTCDate();
-    var mm = (date.getUTCMonth() + 1);
-
-    if (gg < 10)
-        gg = "0" + gg;
-
-    if (mm < 10)
-        mm = "0" + mm;
-
-    var cur_day = aaaa + "-" + mm + "-" + gg;
-
-    var hours = date.getUTCHours()
-    var minutes = date.getUTCMinutes()
-    var seconds = date.getUTCSeconds();
-
-    if (hours < 10)
-        hours = "0" + hours;
-
-    if (minutes < 10)
-        minutes = "0" + minutes;
-
-    if (seconds < 10)
-        seconds = "0" + seconds;
-
-    return cur_day + "T" + hours + ":" + minutes + ":" + seconds;
-
-}
 
 const loginBtn = document.getElementById("btnLogin");
 let count = 0;
@@ -64,28 +33,32 @@ if(completeTranscaction != null){
         const receiver = document.getElementById("receiver").value;
         const loginPrivate = localStorage.getItem("privateKey");
         const loginPublic = localStorage.getItem("publicKey");
-        const string="SgLYNAIOlfMOSYOn1nojnD4XesO1SX26MUi/XOJm8tG9zZfZ5HxhjoM7s2PgIkQW0BmU/JIhrvQWf5Ul1g5hQnvWC/LavHso3XgjrZ7937xyzD+mSPq0f93YaIurrYq+FJPCRVKLy2XQ7673+4PWj41Td2jxKBNUw9Z7GcW3jlnoqYP6BXaiwwlU8f2BRBPxfK8LDrJhy5W9BDq/SqIZcnjNkqFch5xYrNUNPRzkbql9LP7pSDjO9L1LiKrRBAOy8CDUuCNgwLMoEKyGccdw22GDBb3nP+SU/f4fsI7qJTndgHCQP0qTg0Y7W8dPBJHGr+ZdxRTLpzSKgLW75JSR0w==";
-        const date = new FormatDate(Date.now());
-        let signNotEncrypt = localStorage.getItem("publicKey") + "@" + receiver + "@" + amount + "@" + date;
+        let date = new Date().toLocaleDateString("fr-CA",{  year: 'numeric', month: '2-digit', day: '2-digit' }) + "T" + new Date().toLocaleTimeString("nl-BE");
+        let dateSign = new Date().toLocaleDateString("nl-BE",{  year: 'numeric', month: '2-digit', day: 'numeric' }) + " " + new Date().toLocaleTimeString("nl-BE");
+        
+        let signNotEncrypt = count + "@" + "System.Byte[]"+ "@" +"System.Byte[]"  + "@" + amount + "@" + dateSign;
 
         if(amount.toString().length >0 && receiver.toString().length > 0){
             
-        // var sign = new JSEncrypt();
-        // sign.setPrivateKey(loginPrivate.val());
-        // var signature = sign.sign(signNotEncrypt.val(), CryptoJS.SHA256, "sha256");
-
+        var sign = new JSEncrypt();
+        sign.setPrivateKey(loginPrivate);
+        var signature = sign.sign(signNotEncrypt, CryptoJS.SHA256, "sha256");
+        
+        console.log(signNotEncrypt);
+        console.log(signature);
         let transaction = {
-            "transactionNumber" : count,
-            "amount" : amount,
-            "timeStamp" : date,
-            "senderKey" : loginPublic,
-            "receiverKey" : receiver,
-            "signature" : string,
-            "type" : 0
+            "transactionNumber": count,
+            "amount": amount,
+            "timeStamp": date,
+            "senderKey": loginPublic,
+            "recieverKey": receiver,
+            "signature": signature,
+            "type": 0
         }
+        console.log(transaction);
         await fetch("http://localhost:5262/transaction",{
             method: "POST",
-            header: {"Content-Type":"application/json"},
+            headers: {"Content-Type":"application/json"},
             body: JSON.stringify(transaction)   
         }).then(async(res) => { 
                 alert("Transaction of " + amount + " has been completed");
