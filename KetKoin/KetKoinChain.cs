@@ -101,7 +101,6 @@ public class KetKoinChain : KettingChain
                 }
             }
         }
-
         return transactions;
     }
 
