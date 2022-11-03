@@ -1,5 +1,4 @@
 export default class Wallet{
-
     constructor(publicKey,balance){
         this._publicKey = publicKey;
         this._balance = balance;

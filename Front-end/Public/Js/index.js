@@ -30,7 +30,7 @@ function FormatDate() {
     if (seconds < 10)
         seconds = "0" + seconds;
 
-    return cur_day + " " + hours + ":" + minutes + ":" + seconds;
+    return cur_day + "T" + hours + ":" + minutes + ":" + seconds;
 
 }
 
@@ -62,11 +62,11 @@ if(completeTranscaction != null){
         count++
         const amount= document.getElementById("amount").value;
         const receiver = document.getElementById("receiver").value;
-        const datum = Date.now();
         const loginPrivate = localStorage.getItem("privateKey");
         const loginPublic = localStorage.getItem("publicKey");
-        const string="SgLYNAIOlfMOSYOn1nojnD4XesO1SX26MUi/XOJm8tG9zZfZ5HxhjoM7s2PgIkQW0BmU/JIhrvQWf5Ul1g5hQnvWC/LavHso3XgjrZ7937xyzD+mSPq0f93YaIurrYq+FJPCRVKLy2XQ7673+4PWj41Td2jxKBNUw9Z7GcW3jlnoqYP6BXaiwwlU8f2BRBPxfK8LDrJhy5W9BDq/SqIZcnjNkqFch5xYrNUNPRzkbql9LP7pSDjO9L1LiKrRBAOy8CDUuCNgwLMoEKyGccdw22GDBb3nP+SU/f4fsI7qJTndgHCQP0qTg0Y7W8dPBJHGr+ZdxRTLpzSKgLW75JSR0w=="
-        let signNotEncrypt = localStorage.getItem("publicKey") + "@" + receiver + "@" + amount + "@" + datum;
+        const string="SgLYNAIOlfMOSYOn1nojnD4XesO1SX26MUi/XOJm8tG9zZfZ5HxhjoM7s2PgIkQW0BmU/JIhrvQWf5Ul1g5hQnvWC/LavHso3XgjrZ7937xyzD+mSPq0f93YaIurrYq+FJPCRVKLy2XQ7673+4PWj41Td2jxKBNUw9Z7GcW3jlnoqYP6BXaiwwlU8f2BRBPxfK8LDrJhy5W9BDq/SqIZcnjNkqFch5xYrNUNPRzkbql9LP7pSDjO9L1LiKrRBAOy8CDUuCNgwLMoEKyGccdw22GDBb3nP+SU/f4fsI7qJTndgHCQP0qTg0Y7W8dPBJHGr+ZdxRTLpzSKgLW75JSR0w==";
+        const date = new FormatDate(Date.now());
+        let signNotEncrypt = localStorage.getItem("publicKey") + "@" + receiver + "@" + amount + "@" + date;
 
         if(amount.toString().length >0 && receiver.toString().length > 0){
             
@@ -77,13 +77,13 @@ if(completeTranscaction != null){
         let transaction = {
             "transactionNumber" : count,
             "amount" : amount,
-            "timeStamp" : "2022-11-03T11:18:00",
+            "timeStamp" : date,
             "senderKey" : loginPublic,
             "receiverKey" : receiver,
             "signature" : string,
             "type" : 0
         }
-        await fetch("http://localhost:7262/transaction",{
+        await fetch("http://localhost:5262/transaction",{
             method: "POST",
             header: {"Content-Type":"application/json"},
             body: JSON.stringify(transaction)   
@@ -94,6 +94,43 @@ if(completeTranscaction != null){
     
         console.log(amount)// verwijdern als het werkt
 })};
+
+// fetch(`http://localhost:7262/wallet/${publicKey}`)
+// .then((response) => {
+//     return response.json();
+// })
+// .then((wallets) => {
+//     wallets = wallets.map((wallet)=> {
+//         return new Wallet(
+//             wallet._balance,
+//             wallet.     
+//     });
+//     const walletsSection = document.getElementById("produkten");
+//     let produktenHtmlString ="";
+//     produkten.forEach((produkt, index)=>{
+//         if(index % 4 == 0) produktenHtmlString += "<div class='row'>" 
+//         produktenHtmlString += produkt.toHtmlString();
+//         if(index % 4 == 3 || index === produkten.length - 1) produktenHtmlString += "</div>"
+//     });
+//     produktenSection.innerHTML = produktenHtmlString;
+    
+//     const bestelButtons = document.querySelectorAll(".toevoegen");
+//     for (var i = 0; i < bestelButtons.length; i++){
+//         const bestelButton = bestelButtons[i];
+//         bestelButton.addEventListener("click",(e) =>{
+//         if(bestelling == null){
+//             bestelling = new Bestelling();
+//         }
+//         let id = `${e.target.id}`
+        
+//         bestelling.addBesteldProdukt(id);
+//         bestellingTableBody.innerHTML = bestelling.toHtmlString();
+
+    
+//         });
+//     }
+
+// });
 
 
 
