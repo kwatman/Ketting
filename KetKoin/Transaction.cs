@@ -33,7 +33,7 @@ public class Transaction : BlockData
         RecieverKey = recieverKey;
         TimeStamp = DateTime.Now;
         Type = type;
-        string data = senderKey + "@" + recieverKey + "@" + amount + "@" + TimeStamp;
+        string data = transactionNumber + "@" + senderKey + "@" + recieverKey + "@" + amount + "@" + TimeStamp;
 
         int keyLength = 2048;
         RSA sender = RSA.Create();
@@ -47,15 +47,18 @@ public class Transaction : BlockData
         bool correct = true;
         RSA rsaVerify = RSA.Create();
         rsaVerify.ImportRSAPublicKey(SenderKey,out _);
-        string originalData = SenderKey + "@" + RecieverKey + "@" + Amount + "@" + TimeStamp;
+        string originalData = TransactionNumber + "@" + SenderKey + "@" + RecieverKey + "@" + Amount + "@" + TimeStamp;
+        Console.WriteLine(originalData);
         if (!rsaVerify.VerifyData(Convert.FromBase64String(Convert.ToBase64String(Encoding.UTF8.GetBytes(originalData))),
                 Convert.FromBase64String(Signature), HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1))
         {
+            Console.WriteLine("Signature of transaction is not vallid.");
             correct = false;
         }
 
         if (KetKoinChain.GetBalance(rsaVerify.ExportRSAPublicKey()) < 0)
         {
+            Console.WriteLine("Wallet does not have that amount of ket to send.");
             correct = false;
         }
         return correct;

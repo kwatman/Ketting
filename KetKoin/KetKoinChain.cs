@@ -56,7 +56,7 @@ public class KetKoinChain : KettingChain
         {
             foreach (Transaction transaction in block.Data)
             {
-                if (transaction.RecieverKey.SequenceEqual(walletPublicKey) || transaction.SenderKey.SequenceEqual(walletPublicKey))
+                if ((transaction.RecieverKey.SequenceEqual(walletPublicKey) || transaction.SenderKey.SequenceEqual(walletPublicKey)) && transaction.Type == Type.Transaction)
                 {
                     if (!foundLatestTransaction)
                     {
@@ -70,6 +70,7 @@ public class KetKoinChain : KettingChain
         }
         if(ammountOfTransactions != 0)
         {
+            Console.WriteLine("Count is: " + ammountOfTransactions);
             throw new Exception("Invalid count! balance counting loop has ended but not all transactions have been found");
         }
         return balance;

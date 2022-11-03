@@ -36,14 +36,14 @@ public class ConnectionService : BackgroundService
                             discoveryService.connections.Add(responseConnection);
                         }
 
-                        await Task.Delay(TimeSpan.FromSeconds(5), stoppingToken);
+                        await Task.Delay(TimeSpan.FromMilliseconds(10), stoppingToken);
                     }
                 }
             }
 
             Console.WriteLine("I currently have the following connections stored: ");
             discoveryService.connections.ForEach(Console.WriteLine);
-            await Task.Delay(TimeSpan.FromSeconds(10), stoppingToken);
+            await Task.Delay(TimeSpan.FromMinutes(10), stoppingToken);
         }
     }
 }

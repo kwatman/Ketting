@@ -2,6 +2,7 @@ using System.Net;
 using KetKoin;
 using Ketting;
 using Ketting_server.Services;
+using Ketting_server.Workers;
 using Type = KetKoin.Type;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,9 +18,10 @@ BlockChainService blockChainService = new BlockChainService(builder.Configuratio
 builder.Services.AddSingleton(discoveryService);
 builder.Services.AddSingleton(blockChainService);
 builder.Services.AddSingleton<BroadcastService>();
+builder.Services.AddSingleton<TransactionService>();
 
 builder.Services.AddHostedService<ConnectionService>();
-
+builder.Services.AddHostedService<TransactionWorker>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -28,8 +30,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
-Console.WriteLine(Environment.GetEnvironmentVariable("INITC"));
 app.UseSwagger();
 app.UseSwaggerUI();
 

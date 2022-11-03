@@ -32,6 +32,7 @@ public class TransactionDto
             Signature,
             (Type) Type
             );
+        transaction.TimeStamp = TimeStamp;
         return transaction;
     }
 }

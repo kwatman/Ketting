@@ -12,7 +12,14 @@ public class BroadcastService
         foreach (string ip in connections)
         {
             HttpClient client = new HttpClient();
-            var response = await client.PostAsJsonAsync("https://" +ip +"/discovery/handshake", transactionDto);
+            try
+            {
+                var response = await client.PostAsJsonAsync("http://" + ip + "/transaction", transactionDto);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
         }
     }
 }
