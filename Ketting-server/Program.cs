@@ -22,6 +22,8 @@ builder.Services.AddSingleton<TransactionService>();
 
 builder.Services.AddHostedService<ConnectionService>();
 builder.Services.AddHostedService<TransactionWorker>();
+
+builder.Services.AddCors();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -32,7 +34,11 @@ if (app.Environment.IsDevelopment())
 }
 app.UseSwagger();
 app.UseSwaggerUI();
-
+app.UseCors(x => x
+    .AllowAnyMethod()
+    .AllowAnyHeader()
+    .SetIsOriginAllowed(origin => true) // allow any origin
+    .AllowCredentials()); // allow credentials
 ServicePointManager.ServerCertificateValidationCallback += (sender, certificate, chain, errors) =>
 {
     return true;
