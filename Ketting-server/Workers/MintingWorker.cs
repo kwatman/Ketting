@@ -30,6 +30,7 @@ public class MintingWorker: BackgroundService
             if (KetKoinChain.TransactionPool.Count >= 5)
             {
                 Console.WriteLine("Starting minting proccess");
+                Console.WriteLine(Convert.ToBase64String(Stake.GetHighestStake()));
                 if (Stake.GetHighestStake() == BlockChainService.KetKoinChain.NodeKeys.PublicKey)
                 {
                     Console.WriteLine("Im the leader! Minting new block");

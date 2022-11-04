@@ -31,6 +31,7 @@ namespace KetKoin
             for (int i = 0; i < orderedBlockchain.Count; i++)
             {
                 Block block = orderedBlockchain[i];
+                Console.WriteLine("Checking block with public key: " + block.PublicKey);
                 publicKeys.Add(Convert.FromBase64String(Convert.ToBase64String(Encoding.UTF8.GetBytes(block.PublicKey))));
 
                 foreach (Transaction transaction in block.Data
@@ -38,6 +39,7 @@ namespace KetKoin
                 .Where(t => ((Transaction) t).Type == Type.Stake)
                 .ToList())
                 {
+                    Console.WriteLine("Checking transaction from: " + Convert.ToBase64String(transaction.SenderKey));
                     if (!stakePerSender.ContainsKey(transaction.SenderKey)
                         && (
                             (Math.Floor((double) (block.AmountOfStakers / 2)) < i
@@ -47,6 +49,7 @@ namespace KetKoin
                         && !publicKeys.Contains(transaction.SenderKey)
                         )
                     {
+                        Console.WriteLine("Found valid stake from: " + Convert.ToBase64String(transaction.SenderKey));
                         stakePerSender.Add(transaction.SenderKey, transaction.Amount);
                     }
                 }
