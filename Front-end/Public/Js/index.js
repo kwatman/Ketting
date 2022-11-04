@@ -1,5 +1,5 @@
 
-let localHost= "localhost:5262";
+let localHost= localStorage.getItem("publicKey");
 
 const loginBtn = document.getElementById("btnLogin");
 
@@ -21,9 +21,9 @@ if(localHostBtn != null){
         if(localHostInput.toString().length == 0) {
             alert("Please enter ip or localhost address");
         }else{
-            localHost = document.getElementById("localHostInput").value; 
+            localStorage.setItem("address", localHostInput);
         }  
-    })};
+})};
 
 if(loginBtn != null){
 loginBtn.addEventListener("click", async(e) => {
@@ -72,10 +72,7 @@ if(completeTranscaction != null){
             res.transactions.forEach((transaction) => {
                 if(transaction.type == 1){
                     count += 1;
-                }  
-                if(transaction.type == 0){
-                    count += 1;
-                }       
+                }        
             })
             
         });
@@ -178,32 +175,5 @@ myWallet.addEventListener("click", async(e) => {
         
 })};
 
-document.getElementById("test").addEventListener("click", () => {
-    getTransactionCount();
-})
-function getTransactionCount(){
-    console.log("TransactionCount:");  
-    let transactionCount= 0; 
-    const loginPublic = localStorage.getItem("publicKey");
-    let publicKey= {"publicKey" : loginPublic}
-    fetch("http://localhost:5262/wallet",{
-        method: "POST",
-        headers: {"Content-Type":"application/json"},
-        body: JSON.stringify(publicKey),
-    })
-    .then(res => res.json())
-    .then((res) => { 
 
-        let count = 0; 
-        
-
-        res.transactions.forEach((transaction) => {
-            if(transaction.type == 1){
-                count += 1;
-            }         
-        })
-        
-    });
-    
-}
 
