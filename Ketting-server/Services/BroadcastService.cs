@@ -19,7 +19,7 @@ public class BroadcastService
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                Console.WriteLine(e.Message);
             }
         }
     }
@@ -37,7 +37,7 @@ public class BroadcastService
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                Console.WriteLine(e.Message);
             }
         }
     }
