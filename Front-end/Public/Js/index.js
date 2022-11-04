@@ -1,6 +1,6 @@
 import Wallet from "./wallet.js"; 
 import Block from "./block.js";
-import WalletInfo from "./walletInfo.js";
+//import WalletInfo from "./walletInfo.js";
 
 
 const loginBtn = document.getElementById("btnLogin");
@@ -34,11 +34,11 @@ if(completeTranscaction != null){
         const loginPrivate = localStorage.getItem("privateKey");
         const loginPublic = localStorage.getItem("publicKey");
         let date = new Date().toLocaleDateString("fr-CA",{  year: 'numeric', month: '2-digit', day: '2-digit' }) + "T" + new Date().toLocaleTimeString("nl-BE");
-        let dateSign = new Date().toLocaleDateString("nl-BE",{  year: 'numeric', month: '2-digit', day: 'numeric' }) + " " + new Date().toLocaleTimeString("nl-BE");
         
-        let signNotEncrypt = count + "@" + "System.Byte[]"+ "@" +"System.Byte[]"  + "@" + amount + "@" + dateSign;
+        let signNotEncrypt = count + "@" + loginPublic + "@" + receiver  + "@" + amount + "@" + date;
+        console.log(signNotEncrypt);
 
-        if(amount.toString().length >0 && receiver.toString().length > 0){
+        if(amount.toString().length > 0 && receiver.toString().length > 0){
             
         var sign = new JSEncrypt();
         sign.setPrivateKey(loginPrivate);
@@ -56,14 +56,19 @@ if(completeTranscaction != null){
             "type": 0
         }
         console.log(transaction);
-        await fetch("http://localhost:5262/transaction",{
+
+        await fetch("http://localhost:2400/transaction",{
             method: "POST",
             headers: {"Content-Type":"application/json"},
             body: JSON.stringify(transaction)   
         }).then(async(res) => { 
                 alert("Transaction of " + amount + " has been completed");
         });
-        }else{alert("Fill the inputfields to make transaction");}
+
+        }
+        else{
+            alert("Fill the inputfields to make transaction");
+        }
     
         console.log(amount)// verwijdern als het werkt
 })};
