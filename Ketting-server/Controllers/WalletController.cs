@@ -21,7 +21,7 @@ public class WalletController : ControllerBase
         return KetKoinChain.GetBalance(Convert.FromBase64String(publicKey));
     }
     
-    [Route("/wallet/{publicKey}")]
+    [Route("/wallet")]
     [HttpPost]
     public async Task<WalletDto> GetWallet([FromBody] GetWalletDto getWalletDto)
     {
