@@ -1,14 +1,32 @@
-import Wallet from "./wallet.js"; 
-import Block from "./block.js";
-//import WalletInfo from "./walletInfo.js";
 
+
+
+let count = 0;
+let localHost= "localhost:5262";
 
 const loginBtn = document.getElementById("btnLogin");
-let count = 0;
+
+const localHostBtn = document.getElementById("localHostBtn");
+
 const completeTranscaction = document.getElementById("completeTranscaction")
-const searchBlock = document.querySelector("#searchBlockButton")
-const mywallet =document.querySelector("#mywallet")
-const searchWallet = document.querySelector("#searchWalletButton")
+
+const searchBlock = document.getElementById("searchBlockButton")
+
+const myWallet =document.getElementById("myWallet")
+const searchWalletBtn = document.getElementById("searchWalletButton")
+
+
+if(localHostBtn != null){
+    localHostBtn.addEventListener("click", async(e) => {
+        e.preventDefault();
+        let localHostInput = document.getElementById("localHostInput").value; 
+        
+        if(localHostInput.toString().length == 0) {
+            alert("Please enter ip or localhost address");
+        }else{
+            localHost = document.getElementById("localHostInput").value; 
+        }  
+    })};
 
 if(loginBtn != null){
 loginBtn.addEventListener("click", async(e) => {
@@ -25,8 +43,10 @@ loginBtn.addEventListener("click", async(e) => {
 })};
 
 
+
 if(completeTranscaction != null){
     completeTranscaction.addEventListener("click", async(e)=>{
+
         e.preventDefault();
         count++
         const amount= document.getElementById("amount").value;
@@ -44,8 +64,6 @@ if(completeTranscaction != null){
         sign.setPrivateKey(loginPrivate);
         var signature = sign.sign(signNotEncrypt, CryptoJS.SHA256, "sha256");
         
-        console.log(signNotEncrypt);
-        console.log(signature);
         let transaction = {
             "transactionNumber": count,
             "amount": amount,
@@ -57,58 +75,85 @@ if(completeTranscaction != null){
         }
         console.log(transaction);
 
-        await fetch("http://localhost:2400/transaction",{
+        await fetch("http://"+localHost+"/transaction",{
             method: "POST",
             headers: {"Content-Type":"application/json"},
             body: JSON.stringify(transaction)   
         }).then(async(res) => { 
                 alert("Transaction of " + amount + " has been completed");
         });
-
         }
         else{
             alert("Fill the inputfields to make transaction");
         }
-    
-        console.log(amount)// verwijdern als het werkt
 })};
 
-// fetch(`http://localhost:7262/wallet/${publicKey}`)
-// .then((response) => {
-//     return response.json();
-// })
-// .then((wallets) => {
-//     wallets = wallets.map((wallet)=> {
-//         return new Wallet(
-//             wallet._balance,
-//             wallet.     
-//     });
-//     const walletsSection = document.getElementById("produkten");
-//     let produktenHtmlString ="";
-//     produkten.forEach((produkt, index)=>{
-//         if(index % 4 == 0) produktenHtmlString += "<div class='row'>" 
-//         produktenHtmlString += produkt.toHtmlString();
-//         if(index % 4 == 3 || index === produkten.length - 1) produktenHtmlString += "</div>"
-//     });
-//     produktenSection.innerHTML = produktenHtmlString;
-    
-//     const bestelButtons = document.querySelectorAll(".toevoegen");
-//     for (var i = 0; i < bestelButtons.length; i++){
-//         const bestelButton = bestelButtons[i];
-//         bestelButton.addEventListener("click",(e) =>{
-//         if(bestelling == null){
-//             bestelling = new Bestelling();
-//         }
-//         let id = `${e.target.id}`
+if(searchWalletBtn != null){
+searchWalletBtn.addEventListener("click", async(e) => {
         
-//         bestelling.addBesteldProdukt(id);
-//         bestellingTableBody.innerHTML = bestelling.toHtmlString();
-
+    const searchWalletInput = document.getElementById("searchWalletInput").value
     
-//         });
-//     }
+    if(searchWalletInput.toString().length > 0){
 
-// });
+    await fetch("http://"+localHost+"/wallet",{
+            method: "POST",
+            headers: {"Content-Type":"application/json"},
+            body: JSON.stringify(searchWalletInput)   
+        })
+        .then(res => res.json())
+        .then(res => { 
+            console.log(res)
+            const stringAdress = "Address: " + res.address;
+            const stringBalance= "Balance: "+ res.balance;
+            document.getElementById("wallet").innerHTML = '<li class="list-group-item text-truncate" >' + stringAdress + "</li>"+ '<li class="list-group-item text-truncate" >' + stringBalance + "</li>"
+        });
+        }
+        else{
+            alert("Fill search field");
+        }
+    
+})};
+
+if(myWallet != null){
+myWallet.addEventListener("click", async(e) => {
+    const loginPublic = localStorage.getItem("publicKey");
+
+    console.log(loginPublic);
+    
+    if(loginPublic != null){
+
+        let publicKey ={
+            "publicKey": loginPublic
+        }
+
+    await fetch("http://"+localHost+"/wallet",{
+            method: "POST",
+            headers: {"Content-Type":"application/json"},
+            body: JSON.stringify(publicKey)   
+        })
+        .then(res => res.json())
+        .then(res => { 
+            const stringAdress = "Address: " + res.address;
+            const stringBalance= "Balance: "+ res.balance;
+            let lijstTransactions = "";
+            
+
+        res.transactions.forEach((transaction) => {
+            let transactionNumber = transaction.transactionNumber;
+            let transactionAmount = transaction.amount;
+            let transactionTimeStamp = transaction.timeStamp;
+            
+            lijstTransactions += "Number: "+ transactionNumber + "|| Amount: " + transactionAmount + "|| Timestamp: "+ transactionTimeStamp + "</br>";
+        })
+
+            document.getElementById("wallet").innerHTML = '<li class="list-group-item text-truncate" >' + stringAdress + "</li>"+ '<li class="list-group-item text-truncate" >' + stringBalance + "</li>" + "<li class='list-group-item'>"+lijstTransactions +"</li>" ;
+        });
+        }
+        else{
+            alert("Login");
+        }
+        
+})};
 
 
 

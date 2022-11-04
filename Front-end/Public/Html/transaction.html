@@ -16,14 +16,14 @@
 
   <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <div class="container-fluid">
-        <a class="navbar-brand" href="home.html">Ketting</a>
+        <a class="navbar-brand" href="index.html">Ketting</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarColor01">
         <ul class="navbar-nav me-auto">
             <li class="nav-item">
-                <a class="nav-link" href="home.html">Home</a>
+                <a class="nav-link" href="index.html">Home</a>
             </li>
             <li class="nav-item">
             <a class="nav-link" href="login.html">Login</a>
@@ -32,8 +32,16 @@
             <a class="nav-link" href="wallets.html">Wallet</a>
             </li>
             <li class="nav-item">
-            <a class="nav-link" href="block.html">Block</a>
-            </li>
+              <a class="nav-link" href="Transaction.html">Make transaction</a>
+              </li>
+              <li class="nav-item mt-1 mb-1">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <button class="btn btn-outline-secondary" type="button" id="localHostBtn">Address: </button>
+                  </div>
+                  <input type="text" class="form-control" id="localHostInput" placeholder="localhost:5262" >
+                </div>
+              </li>
         </ul>
         </div>
     </div>
