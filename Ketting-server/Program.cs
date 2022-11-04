@@ -60,7 +60,7 @@ else
     Console.WriteLine(app.Configuration["GenesisKey"]);
     Byte[] bytes = new Byte[0];
     Transaction transaction = new Transaction(50000,bytes, Convert.FromBase64String(app.Configuration["GenesisKey"]),1,"genesis",Type.Transaction);
-    Transaction stake = new Transaction(1000,bytes, Convert.FromBase64String(app.Configuration["GenesisKey"]),1,"genesis",Type.Stake);
+    Transaction stake = new Transaction(1000,Convert.FromBase64String(app.Configuration["GenesisKey"]), bytes,1,"genesis",Type.Stake);
     block.Data.Add(transaction);
     block.Data.Add(stake);
     block.Timestamp = new DateTime(2022, 11, 2);
