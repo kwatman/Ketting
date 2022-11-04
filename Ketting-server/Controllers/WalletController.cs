@@ -22,13 +22,13 @@ public class WalletController : ControllerBase
     }
     
     [Route("/wallet/{publicKey}")]
-    [HttpGet]
-    public async Task<WalletDto> GetWallet(string publicKey)
+    [HttpPost]
+    public async Task<WalletDto> GetWallet([FromBody] GetWalletDto getWalletDto)
     {
         WalletDto wallet = new WalletDto();
-        wallet.Address = publicKey;
-        wallet.Balance = KetKoinChain.GetBalance(Convert.FromBase64String(publicKey));
-        foreach (Transaction transaction in blockChainService.KetKoinChain.GetWalletTransactions(Convert.FromBase64String(publicKey)))
+        wallet.Address = getWalletDto.PublicKey;
+        wallet.Balance = KetKoinChain.GetBalance(Convert.FromBase64String(getWalletDto.PublicKey));
+        foreach (Transaction transaction in blockChainService.KetKoinChain.GetWalletTransactions(Convert.FromBase64String(getWalletDto.PublicKey)))
         {
             TransactionDto transactionDto = new TransactionDto();
             transactionDto.FromObject(transaction);
