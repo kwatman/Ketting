@@ -9,10 +9,14 @@ namespace Ketting_server.Controllers;
 public class BlockChainController : ControllerBase
 {
     private BlockChainService blockChainService { get; set; }
+    private BroadcastService broadcastService { get; set; }
+    private DiscoveryService discoveryService { get; set; }
 
-    public BlockChainController(BlockChainService _blockChainService)
+    public BlockChainController(BlockChainService _blockChainService, BroadcastService _broadcastService, DiscoveryService _discoveryService)
     {
         blockChainService = _blockChainService;
+        broadcastService = _broadcastService;
+        discoveryService = _discoveryService;
     }
     
     [Route("/blockchain/count")]
@@ -39,6 +43,10 @@ public class BlockChainController : ControllerBase
     public async void AddNewBlock([FromBody] BlockDto blocksDto)
     {
         Block block = blocksDto.ToObject();
-        blockChainService.KetKoinChain.AddBlock(block);
+        bool blockAdded = blockChainService.KetKoinChain.AddBlock(block);
+        if (blockAdded)
+        {
+            broadcastService.BroadCastBlockMint(block, discoveryService.connections);
+        }
     }
 }

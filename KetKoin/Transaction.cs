@@ -63,6 +63,13 @@ public class Transaction : BlockData
         }
         return correct;
     }
+
+    public override bool Equals(object? obj)
+    {
+        return obj is Transaction transaction &&
+               TransactionNumber == transaction.TransactionNumber &&
+               Signature == transaction.Signature;
+    }
 }
 public enum Type
 {

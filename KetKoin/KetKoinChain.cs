@@ -1,5 +1,6 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
+using System.Transactions;
 using Ketting;
 
 namespace KetKoin;
@@ -107,12 +108,13 @@ public class KetKoinChain : KettingChain
 
     public bool AddBlock(Block block)
     {
-        if (Block.VerifyBlock(block))
+        if (Block.VerifyBlock(block) && Convert.FromBase64String(block.PublicKey).SequenceEqual(Stake.GetHighestStake()))
         {
-            if (Convert.FromBase64String(block.PublicKey).SequenceEqual(Stake.GetHighestStake()))
+            foreach (Transaction transaction in block.Data)
             {
-                return true;
+                TransactionPool.Remove(transaction);
             }
+            return true;
         }
         return false;
     }

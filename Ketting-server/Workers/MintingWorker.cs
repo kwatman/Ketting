@@ -1,4 +1,5 @@
 ﻿using KetKoin;
+using Ketting;
 using Ketting_server.Dto;
 using Ketting_server.Services;
 
@@ -9,26 +10,31 @@ public class MintingWorker: BackgroundService
     private readonly ILogger<MintingWorker> logger;
     private TransactionService TransactionService { get; set; }
     public BlockChainService BlockChainService { get; set; }
+    public BroadcastService BroadcastService { get; set; }
+    public DiscoveryService DiscoveryService { get; set; }
 
-    public MintingWorker(ILogger<MintingWorker> _logger,TransactionService transactionService,BlockChainService blockChainService)
+    public MintingWorker(ILogger<MintingWorker> _logger,TransactionService transactionService,BlockChainService blockChainService, BroadcastService broadcastService, DiscoveryService discoveryService)
     {
         logger = _logger;
         TransactionService = transactionService;
         BlockChainService = blockChainService;
+        BroadcastService = broadcastService;
+        DiscoveryService = discoveryService;
     }
     
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         while (!stoppingToken.IsCancellationRequested)
         {
-
+            await Task.Delay(TimeSpan.FromSeconds(1), stoppingToken);
             if (KetKoinChain.TransactionPool.Count >= 5)
             {
                 Console.WriteLine("Starting minting proccess");
                 if (Stake.GetHighestStake() == BlockChainService.KetKoinChain.NodeKeys.PublicKey)
                 {
                     Console.WriteLine("Im the leader! Minting new block");
-                    BlockChainService.KetKoinChain.MintBlock();
+                    Block block = BlockChainService.KetKoinChain.MintBlock();
+                    BroadcastService.BroadCastBlockMint(block, DiscoveryService.connections);
                 }
                 else
                 {
