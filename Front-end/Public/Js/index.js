@@ -1,7 +1,4 @@
 
-
-
-let count = 0;
 let localHost= "localhost:5262";
 
 const loginBtn = document.getElementById("btnLogin");
@@ -63,15 +60,34 @@ if(completeTranscaction != null){
         var sign = new JSEncrypt();
         sign.setPrivateKey(loginPrivate);
         var signature = sign.sign(signNotEncrypt, CryptoJS.SHA256, "sha256");
-        
+        let count = 0; 
+        await fetch("http://localhost:5262/wallet",{
+            method: "POST",
+            headers: {"Content-Type":"application/json"},
+            body: JSON.stringify(publicKey),
+            })
+            .then(res => res.json())
+            .then((res) => { 
+            
+            res.transactions.forEach((transaction) => {
+                if(transaction.type == 1){
+                    count += 1;
+                }  
+                if(transaction.type == 0){
+                    count += 1;
+                }       
+            })
+            
+        });
+
         let transaction = {
-            "transactionNumber": count,
+            "transactionNumber": count + 1,
             "amount": amount,
             "timeStamp": date,
             "senderKey": loginPublic,
             "recieverKey": receiver,
             "signature": signature,
-            "type": 0
+            "type": 1
         }
         console.log(transaction);
 
@@ -100,16 +116,23 @@ searchWalletBtn.addEventListener("click", async(e) => {
             headers: {"Content-Type":"application/json"},
             body: JSON.stringify(searchWalletInput)   
         })
-        .then(res => res.json())
-        .then(res => { 
-            console.log(res)
-            const stringAdress = "Address: " + res.address;
+        const stringAdress = "Address: " + res.address;
             const stringBalance= "Balance: "+ res.balance;
-            document.getElementById("wallet").innerHTML = '<li class="list-group-item text-truncate" >' + stringAdress + "</li>"+ '<li class="list-group-item text-truncate" >' + stringBalance + "</li>"
-        });
+            let lijstTransactions = "";
+            
+
+        res.transactions.forEach((transaction) => {
+            let transactionNumber = transaction.transactionNumber;
+            let transactionAmount = transaction.amount;
+            let transactionTimeStamp = transaction.timeStamp;
+            
+            lijstTransactions += "Number: "+ transactionNumber + "|| Amount: " + transactionAmount + "|| Timestamp: "+ transactionTimeStamp + "</br>";
+        })
+
+            document.getElementById("wallet").innerHTML = '<li class="list-group-item text-truncate" >' + stringAdress + "</li>"+ '<li class="list-group-item text-truncate" >' + stringBalance + "</li>" + "<li class='list-group-item'>"+lijstTransactions +"</li>" ;
         }
         else{
-            alert("Fill search field");
+            alert("Login");
         }
     
 })};
@@ -155,5 +178,32 @@ myWallet.addEventListener("click", async(e) => {
         
 })};
 
+document.getElementById("test").addEventListener("click", () => {
+    getTransactionCount();
+})
+function getTransactionCount(){
+    console.log("TransactionCount:");  
+    let transactionCount= 0; 
+    const loginPublic = localStorage.getItem("publicKey");
+    let publicKey= {"publicKey" : loginPublic}
+    fetch("http://localhost:5262/wallet",{
+        method: "POST",
+        headers: {"Content-Type":"application/json"},
+        body: JSON.stringify(publicKey),
+    })
+    .then(res => res.json())
+    .then((res) => { 
 
+        let count = 0; 
+        
+
+        res.transactions.forEach((transaction) => {
+            if(transaction.type == 1){
+                count += 1;
+            }         
+        })
+        
+    });
+    
+}
 
