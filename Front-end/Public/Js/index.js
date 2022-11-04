@@ -1,6 +1,4 @@
 
-let localHost= localStorage.getItem("publicKey");
-
 const loginBtn = document.getElementById("btnLogin");
 
 const localHostBtn = document.getElementById("localHostBtn");
@@ -12,6 +10,7 @@ const searchBlock = document.getElementById("searchBlockButton")
 const myWallet =document.getElementById("myWallet")
 const searchWalletBtn = document.getElementById("searchWalletButton")
 
+let localHost ="localhost:5262"
 
 if(localHostBtn != null){
     localHostBtn.addEventListener("click", async(e) => {
@@ -22,6 +21,7 @@ if(localHostBtn != null){
             alert("Please enter ip or localhost address");
         }else{
             localStorage.setItem("address", localHostInput);
+            localHost= localStorage.getItem("publicKey");
         }  
 })};
 
@@ -45,21 +45,19 @@ if(completeTranscaction != null){
     completeTranscaction.addEventListener("click", async(e)=>{
 
         e.preventDefault();
-        count++
         const amount= document.getElementById("amount").value;
         const receiver = document.getElementById("receiver").value;
         const loginPrivate = localStorage.getItem("privateKey");
         const loginPublic = localStorage.getItem("publicKey");
         let date = new Date().toLocaleDateString("fr-CA",{  year: 'numeric', month: '2-digit', day: '2-digit' }) + "T" + new Date().toLocaleTimeString("nl-BE");
-        
-        let signNotEncrypt = count + "@" + loginPublic + "@" + receiver  + "@" + amount + "@" + date;
-        console.log(signNotEncrypt);
 
         if(amount.toString().length > 0 && receiver.toString().length > 0){
             
-        var sign = new JSEncrypt();
-        sign.setPrivateKey(loginPrivate);
-        var signature = sign.sign(signNotEncrypt, CryptoJS.SHA256, "sha256");
+            let publicKey = {
+                "publicKey": loginPublic
+            };
+
+
         let count = 0; 
         await fetch("http://localhost:5262/wallet",{
             method: "POST",
@@ -77,8 +75,13 @@ if(completeTranscaction != null){
             
         });
 
+        let signNotEncrypt = count + "@" + loginPublic + "@" + receiver  + "@" + amount + "@" + date;
+        var sign = new JSEncrypt();
+        sign.setPrivateKey(loginPrivate);
+        var signature = sign.sign(signNotEncrypt, CryptoJS.SHA256, "sha256");
+
         let transaction = {
-            "transactionNumber": count + 1,
+            "transactionNumber": count++,
             "amount": amount,
             "timeStamp": date,
             "senderKey": loginPublic,
