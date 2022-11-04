@@ -46,8 +46,8 @@ public class TransactionWorker: BackgroundService
                     {
                         Console.WriteLine("the transaction was valid and has been added to the transaction pool.");
                         Console.WriteLine("there are currently: " + KetKoinChain.TransactionPool.Count + " transactions in the pool");
+                        BroadcastService.BroadCastTransaction(transaction.ToObject(),DiscoveryService.connections);
                     }
-                    BroadcastService.BroadCastTransaction(transaction.ToObject(),DiscoveryService.connections);
                 }
 
                 TransactionService.TransactionBuffer.Remove(transaction);

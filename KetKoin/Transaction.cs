@@ -33,7 +33,7 @@ public class Transaction : BlockData
         RecieverKey = recieverKey;
         TimeStamp = DateTime.Now;
         Type = type;
-        string data = transactionNumber + "@" + Convert.ToBase64String(senderKey) + "@" + Convert.ToBase64String(recieverKey) + "@" + amount + "@" + TimeStamp.ToString("yyyy’-‘MM’-‘dd’T’HH’:’mm’:’ss");
+        string data = transactionNumber + "@" + Convert.ToBase64String(senderKey) + "@" + Convert.ToBase64String(recieverKey) + "@" + amount + "@" + TimeStamp.ToString("yyyy-MM-ddTHH:mm:ss");
 
         int keyLength = 2048;
         RSA sender = RSA.Create();
@@ -47,7 +47,7 @@ public class Transaction : BlockData
         bool correct = true;
         RSA rsaVerify = RSA.Create();
         rsaVerify.ImportRSAPublicKey(SenderKey,out _);
-        string originalData = TransactionNumber + "@" + Convert.ToBase64String(SenderKey) + "@" + Convert.ToBase64String(RecieverKey) + "@" + Amount + "@" + TimeStamp.ToString("yyyy’-‘MM’-‘dd’T’HH’:’mm’:’ss");
+        string originalData = TransactionNumber + "@" + Convert.ToBase64String(SenderKey) + "@" + Convert.ToBase64String(RecieverKey) + "@" + Amount + "@" + TimeStamp.ToString("yyyy-MM-ddTHH:mm:ss");
         Console.WriteLine(originalData);
         if (!rsaVerify.VerifyData(Convert.FromBase64String(Convert.ToBase64String(Encoding.UTF8.GetBytes(originalData))),
                 Convert.FromBase64String(Signature), HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1))
