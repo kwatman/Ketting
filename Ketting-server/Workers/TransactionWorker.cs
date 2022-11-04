@@ -10,7 +10,6 @@ public class TransactionWorker: BackgroundService
     private TransactionService TransactionService { get; set; }
     public BlockChainService BlockChainService { get; set; }
     public DiscoveryService DiscoveryService { get; set; }
-
     public BroadcastService BroadcastService { get; set; }
 
     public TransactionWorker(ILogger<TransactionWorker> _logger,TransactionService transactionService,BlockChainService blockChainService,DiscoveryService discoveryService,BroadcastService broadcastService)
