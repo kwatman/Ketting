@@ -42,6 +42,7 @@ public class BlockChainController : ControllerBase
     [HttpPost]
     public async void AddNewBlock([FromBody] BlockDto blocksDto)
     {
+        Console.WriteLine("Received new block");
         Block block = blocksDto.ToObject();
         bool blockAdded = blockChainService.KetKoinChain.AddBlock(block);
         if (blockAdded)

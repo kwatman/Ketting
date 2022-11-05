@@ -35,6 +35,7 @@ public class MintingWorker: BackgroundService
                 {
                     Console.WriteLine("Im the leader! Minting new block");
                     Block block = BlockChainService.KetKoinChain.MintBlock();
+                    BlockChainService.KetKoinChain.AddBlock(block);
                     BroadcastService.BroadCastBlockMint(block, DiscoveryService.connections);
                 }
                 else

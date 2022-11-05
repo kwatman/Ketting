@@ -52,12 +52,16 @@ public class KetKoinChain : KettingChain
         float balance = 0;
         bool foundLatestTransaction = false;
         int ammountOfTransactions = 0;
-        List<Block> orderedBlockchain = BlockChain.OrderBy(b => b.Timestamp).ToList();
+        List<Block> orderedBlockchain = BlockChain.OrderByDescending(b => b.Timestamp).ToList();
+
         foreach (Block block in orderedBlockchain)
         {
-            foreach (Transaction transaction in block.Data)
+            Console.WriteLine("Checking block with timestamp: " + block.Timestamp);
+            List<BlockData> orderedTransactions = block.Data.OrderByDescending(t => ((Transaction) t).TimeStamp).ToList();
+
+            foreach (Transaction transaction in orderedTransactions)
             {
-                if ((transaction.RecieverKey.SequenceEqual(walletPublicKey) || transaction.SenderKey.SequenceEqual(walletPublicKey)) && transaction.Type == Type.Transaction)
+                if ((transaction.RecieverKey.SequenceEqual(walletPublicKey) && transaction.Type == Type.Transaction))
                 {
                     if (!foundLatestTransaction)
                     {
@@ -67,13 +71,26 @@ public class KetKoinChain : KettingChain
                     balance += transaction.Amount;
                     ammountOfTransactions--;
                 }
+
+                if ((transaction.SenderKey.SequenceEqual(walletPublicKey) && transaction.Type == Type.Transaction))
+                {
+                    if (!foundLatestTransaction)
+                    {
+                        foundLatestTransaction = true;
+                        ammountOfTransactions = transaction.TransactionNumber;
+                    }
+                    balance -= transaction.Amount;
+                    ammountOfTransactions--;
+                }
             }
         }
+
         if(ammountOfTransactions != 0)
         {
             Console.WriteLine("Count is: " + ammountOfTransactions);
             throw new Exception("Invalid count! balance counting loop has ended but not all transactions have been found");
         }
+
         return balance;
     }
 
@@ -107,14 +124,21 @@ public class KetKoinChain : KettingChain
 
     public bool AddBlock(Block block)
     {
-        if (Block.VerifyBlock(block) && Convert.FromBase64String(block.PublicKey).SequenceEqual(Stake.GetHighestStake()))
+        if (!KetKoinChain.BlockChain.Any(b => b.Signature == block.Signature))
         {
-            foreach (Transaction transaction in block.Data)
+            Console.WriteLine("Block not found in blockchain");
+            if (Block.VerifyBlock(block) && Convert.FromBase64String(block.PublicKey).SequenceEqual(Stake.GetHighestStake()))
             {
-                TransactionPool.Remove(transaction);
+                foreach (Transaction transaction in block.Data)
+                {
+                    TransactionPool.RemoveAll(t => t.Signature.SequenceEqual(transaction.Signature));
+                }
+
+                BlockChain.Add(block);
+                return true;
             }
-            return true;
         }
+
         return false;
     }
 }

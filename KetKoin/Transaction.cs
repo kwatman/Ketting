@@ -48,7 +48,7 @@ public class Transaction : BlockData
         RSA rsaVerify = RSA.Create();
         rsaVerify.ImportRSAPublicKey(SenderKey,out _);
         string originalData = TransactionNumber + "@" + Convert.ToBase64String(SenderKey) + "@" + Convert.ToBase64String(RecieverKey) + "@" + Amount + "@" + TimeStamp.ToString("yyyy-MM-ddTHH:mm:ss");
-        Console.WriteLine(originalData);
+        //Console.WriteLine(originalData);
         if (!rsaVerify.VerifyData(Convert.FromBase64String(Convert.ToBase64String(Encoding.UTF8.GetBytes(originalData))),
                 Convert.FromBase64String(Signature), HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1))
         {
@@ -56,9 +56,24 @@ public class Transaction : BlockData
             correct = false;
         }
 
-        
-        
-        if (KetKoinChain.GetBalance(SenderKey) < 0)
+        List<Block> orderedBlockchain = KetKoinChain.BlockChain.OrderBy(b => b.Timestamp).ToList();
+
+        foreach (Block block in orderedBlockchain)
+        {
+            foreach(Transaction transaction in block.Data)
+            {
+                if (transaction.SenderKey.SequenceEqual(SenderKey))
+                {
+                    if (transaction.TransactionNumber >= TransactionNumber)
+                    {
+                        Console.WriteLine("Transaction number already exists.");
+                        correct = false;
+                    }
+                }
+            }
+        }
+
+        if (KetKoinChain.GetBalance(rsaVerify.ExportRSAPublicKey()) < 0)
         {
             Console.WriteLine("Wallet does not have that amount of ket to send.");
             correct = false;
