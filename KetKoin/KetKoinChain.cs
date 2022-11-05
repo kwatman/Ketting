@@ -47,7 +47,7 @@ public class KetKoinChain : KettingChain
         return block;
     }
 
-    public static float GetBalance(Byte[] walletPublicKey)
+    public float GetBalance(Byte[] walletPublicKey)
     {
         float balance = 0;
         bool foundLatestTransaction = false;
@@ -56,11 +56,16 @@ public class KetKoinChain : KettingChain
 
         foreach (Block block in orderedBlockchain)
         {
-            Console.WriteLine("Checking block with timestamp: " + block.Timestamp);
+            Console.WriteLine("Checking transactions from block with timestamp: " + block.Timestamp);
             List<BlockData> orderedTransactions = block.Data.OrderByDescending(t => ((Transaction) t).TimeStamp).ToList();
 
             foreach (Transaction transaction in orderedTransactions)
             {
+                if(foundLatestTransaction && transaction.TransactionNumber != ammountOfTransactions )
+                {
+                    Console.WriteLine("WOOPS somthing went wrong. i have a transaction with number: " + transaction.TransactionNumber + " but i need: " + ammountOfTransactions);
+                }
+
                 if ((transaction.RecieverKey.SequenceEqual(walletPublicKey) && transaction.Type == Type.Transaction))
                 {
                     if (!foundLatestTransaction)
@@ -69,9 +74,8 @@ public class KetKoinChain : KettingChain
                         ammountOfTransactions = transaction.TransactionNumber;
                     }
                     balance += transaction.Amount;
-                    ammountOfTransactions--;
                 }
-
+                
                 if ((transaction.SenderKey.SequenceEqual(walletPublicKey) && transaction.Type == Type.Transaction))
                 {
                     if (!foundLatestTransaction)
@@ -79,7 +83,11 @@ public class KetKoinChain : KettingChain
                         foundLatestTransaction = true;
                         ammountOfTransactions = transaction.TransactionNumber;
                     }
-                    balance -= transaction.Amount;
+                    balance -= transaction.Amount;     
+                }
+
+                if((transaction.SenderKey.SequenceEqual(walletPublicKey) || transaction.RecieverKey.SequenceEqual(walletPublicKey)) && transaction.Type == Type.Transaction)
+                {
                     ammountOfTransactions--;
                 }
             }
@@ -98,8 +106,16 @@ public class KetKoinChain : KettingChain
     {
         if (transaction.Verify())
         {
-            TransactionPool.Add(transaction);
-            return true;
+            if (GetBalance(transaction.SenderKey) > 0)
+            {
+                TransactionPool.Add(transaction);
+                return true;
+            }
+            else
+            {
+                Console.WriteLine("Wallet does not have that amount of ket to send.");
+                return false;
+            }
         }
         return false;
     }

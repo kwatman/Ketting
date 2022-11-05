@@ -18,7 +18,7 @@ public class WalletController : ControllerBase
     [HttpGet]
     public async Task<float> GetWalletBalance(string publicKey)
     {
-        return KetKoinChain.GetBalance(Convert.FromBase64String(publicKey));
+        return blockChainService.KetKoinChain.GetBalance(Convert.FromBase64String(publicKey));
     }
     
     [Route("/wallet")]
@@ -27,7 +27,7 @@ public class WalletController : ControllerBase
     {
         WalletDto wallet = new WalletDto();
         wallet.Address = getWalletDto.PublicKey;
-        wallet.Balance = KetKoinChain.GetBalance(Convert.FromBase64String(getWalletDto.PublicKey));
+        wallet.Balance = blockChainService.KetKoinChain.GetBalance(Convert.FromBase64String(getWalletDto.PublicKey));
         wallet.Transactions = new List<TransactionDto>();
         foreach (Transaction transaction in blockChainService.KetKoinChain.GetWalletTransactions(Convert.FromBase64String(getWalletDto.PublicKey)))
         {

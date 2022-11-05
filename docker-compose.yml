@@ -50,6 +50,8 @@ services:
       - '80'
     networks:
       - ketkoin-network
+    depends_on:
+      - "container1"
       
   container5:
     image: ketkoinserver
@@ -62,6 +64,8 @@ services:
       - '80'
     networks:
       - ketkoin-network
+    depends_on:
+      - "container1"
         
 networks:
   ketkoin-network:

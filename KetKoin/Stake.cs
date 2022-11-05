@@ -24,6 +24,7 @@ namespace KetKoin
 
         public static Dictionary<Byte[], float> GetStakePerSender()
         {
+            Console.WriteLine("Checking stake from blockchain. there are "  + KetKoinChain.BlockChain.Count + " blocks to check");
             Dictionary<Byte[], float> stakePerSender = new Dictionary<Byte[], float>();
             List<Block> orderedBlockchain = KetKoinChain.BlockChain.OrderBy(b => b.Timestamp).ToList();
             List<Byte[]> publicKeys = new List<Byte[]>();
