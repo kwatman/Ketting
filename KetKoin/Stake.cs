@@ -51,7 +51,7 @@ namespace KetKoin
                         )
                     {
                         Console.WriteLine("Found valid stake from: ");
-                        stakePerSender.Add(transaction.SenderKey, transaction.Amount);
+                        stakePerSender.Add(transaction.SenderKey, transaction.Amount * (i + 1));
                     }
                 }
             }
