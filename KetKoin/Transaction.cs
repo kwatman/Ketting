@@ -56,7 +56,9 @@ public class Transaction : BlockData
             correct = false;
         }
 
-        if (KetKoinChain.GetBalance(rsaVerify.ExportRSAPublicKey()) < 0)
+        
+        
+        if (KetKoinChain.GetBalance(SenderKey) < 0)
         {
             Console.WriteLine("Wallet does not have that amount of ket to send.");
             correct = false;
