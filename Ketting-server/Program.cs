@@ -24,6 +24,7 @@ builder.Services.AddSingleton<BlockService>();
 builder.Services.AddHostedService<ConnectionService>();
 builder.Services.AddHostedService<TransactionWorker>();
 builder.Services.AddHostedService<MintingWorker>();
+builder.Services.AddHostedService<VerifyWorker>();
 
 builder.Services.AddCors();
 var app = builder.Build();
