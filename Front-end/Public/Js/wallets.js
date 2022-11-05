@@ -1,5 +1,6 @@
 const myWallet =document.getElementById("myWallet")
 const searchWalletBtn = document.getElementById("searchWalletButton")
+let localHost =localStorage.getItem("address")
 
 searchWalletBtn.addEventListener("click", async(e) => {
         

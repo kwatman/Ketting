@@ -55,6 +55,22 @@
         <ul class="list-group list-group-flush">
           <li class="list-group-item"><input class="form-control" type="text" id="amount" placeholder="Amount in KetCoin"></li>
           <li class="list-group-item"><input class="form-control" type="text" id="receiver" placeholder="Receiver PublicKey"></li>
+          <li class="list-group-item">
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="flexRadioDefault" id="radTransaction">
+            <label class="form-check-label" for="flexRadioDefault1">
+              Transaction
+            </label>
+          </div>
+        </li>
+          <li class="list-group-item">
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="flexRadioDefault" id="radStake">
+            <label class="form-check-label" for="flexRadioDefault2">
+              Stake
+            </label>
+          </div>
+        </li>
         </ul>
         <div class="card-body mt-4">
             <button id="completeTranscaction" type="transaction" class="btn btn-info" >Complete transaction</button>
