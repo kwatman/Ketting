@@ -11,12 +11,14 @@ public class BlockChainController : ControllerBase
     private BlockChainService blockChainService { get; set; }
     private BroadcastService broadcastService { get; set; }
     private DiscoveryService discoveryService { get; set; }
+    private BlockService BlockService { get; set; }
 
-    public BlockChainController(BlockChainService _blockChainService, BroadcastService _broadcastService, DiscoveryService _discoveryService)
+    public BlockChainController(BlockChainService _blockChainService, BroadcastService _broadcastService, DiscoveryService _discoveryService,BlockService blockService)
     {
         blockChainService = _blockChainService;
         broadcastService = _broadcastService;
         discoveryService = _discoveryService;
+        BlockService = blockService;
     }
     
     [Route("/blockchain/count")]
@@ -42,12 +44,9 @@ public class BlockChainController : ControllerBase
     [HttpPost]
     public async void AddNewBlock([FromBody] BlockDto blocksDto)
     {
-        Console.WriteLine("Received new block");
+        Console.WriteLine("Received new block adding it to the buffer");
         Block block = blocksDto.ToObject();
-        bool blockAdded = blockChainService.KetKoinChain.AddBlock(block);
-        if (blockAdded)
-        {
-            broadcastService.BroadCastBlockMint(block, discoveryService.connections);
-        }
+        BlockService.BlockBuffer.Add(block);
+
     }
 }

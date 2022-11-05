@@ -19,6 +19,7 @@ builder.Services.AddSingleton(discoveryService);
 builder.Services.AddSingleton(blockChainService);
 builder.Services.AddSingleton<BroadcastService>();
 builder.Services.AddSingleton<TransactionService>();
+builder.Services.AddSingleton<BlockService>();
 
 builder.Services.AddHostedService<ConnectionService>();
 builder.Services.AddHostedService<TransactionWorker>();
