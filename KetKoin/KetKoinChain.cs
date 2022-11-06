@@ -39,6 +39,10 @@ public class KetKoinChain : KettingChain
                 }
             }
         }
+
+        Byte[] bytes = new byte[0];
+        Transaction minterReward = new Transaction(1,bytes,NodeKeys.PublicKey,1,"reward",Type.Reward);
+        
         block.Timestamp = DateTime.Now;
         block.PublicKey = Convert.ToBase64String(NodeKeys.rsa.ExportRSAPublicKey());
         block.Hash = Block.HashBlock(block.PrevHash, block.Data, block.Timestamp);
@@ -50,8 +54,6 @@ public class KetKoinChain : KettingChain
     public float GetBalance(Byte[] walletPublicKey)
     {
         float balance = 0;
-        bool foundLatestTransaction = false;
-        int ammountOfTransactions = 0;
         List<Block> orderedBlockchain = BlockChain.OrderByDescending(b => b.Timestamp).ToList();
 
         foreach (Block block in orderedBlockchain)
@@ -61,42 +63,26 @@ public class KetKoinChain : KettingChain
 
             foreach (Transaction transaction in orderedTransactions)
             {
-                if(foundLatestTransaction && transaction.TransactionNumber != ammountOfTransactions )
-                {
-                    Console.WriteLine("WOOPS somthing went wrong. i have a transaction with number: " + transaction.TransactionNumber + " but i need: " + ammountOfTransactions);
-                }
-
                 if ((transaction.RecieverKey.SequenceEqual(walletPublicKey) && transaction.Type == Type.Transaction))
                 {
-                    if (!foundLatestTransaction)
-                    {
-                        foundLatestTransaction = true;
-                        ammountOfTransactions = transaction.TransactionNumber;
-                    }
                     balance += transaction.Amount;
+                }
+                
+                if ((transaction.RecieverKey.SequenceEqual(walletPublicKey) && transaction.Type == Type.Reward))
+                {
+                    balance += transaction.Amount;
+                }
+                
+                if ((transaction.SenderKey.SequenceEqual(walletPublicKey) && transaction.Type == Type.Stake))
+                {
+                    balance -= transaction.Amount;     
                 }
                 
                 if ((transaction.SenderKey.SequenceEqual(walletPublicKey) && transaction.Type == Type.Transaction))
                 {
-                    if (!foundLatestTransaction)
-                    {
-                        foundLatestTransaction = true;
-                        ammountOfTransactions = transaction.TransactionNumber;
-                    }
                     balance -= transaction.Amount;     
                 }
-
-                if((transaction.SenderKey.SequenceEqual(walletPublicKey) || transaction.RecieverKey.SequenceEqual(walletPublicKey)) && transaction.Type == Type.Transaction)
-                {
-                    ammountOfTransactions--;
-                }
             }
-        }
-
-        if(ammountOfTransactions != 0)
-        {
-            Console.WriteLine("Count is: " + ammountOfTransactions);
-            throw new Exception("Invalid count! balance counting loop has ended but not all transactions have been found");
         }
 
         return balance;

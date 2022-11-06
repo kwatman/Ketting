@@ -1,4 +1,5 @@
 ﻿using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using Ketting;
 
@@ -49,11 +50,20 @@ public class Transaction : BlockData
         rsaVerify.ImportRSAPublicKey(SenderKey,out _);
         string originalData = TransactionNumber + "@" + Convert.ToBase64String(SenderKey) + "@" + Convert.ToBase64String(RecieverKey) + "@" + Amount + "@" + TimeStamp.ToString("yyyy-MM-ddTHH:mm:ss");
         //Console.WriteLine(originalData);
-        if (!rsaVerify.VerifyData(Convert.FromBase64String(Convert.ToBase64String(Encoding.UTF8.GetBytes(originalData))),
-                Convert.FromBase64String(Signature), HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1))
+        if(Type == Type.Transaction || Type == Type.Stake){
+            if (!rsaVerify.VerifyData(Convert.FromBase64String(Convert.ToBase64String(Encoding.UTF8.GetBytes(originalData))),
+                    Convert.FromBase64String(Signature), HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1))
+            {
+                Console.WriteLine("Signature of transaction is not vallid.");
+                correct = false;
+            }
+        }
+        else if(Type == Type.Reward)
         {
-            Console.WriteLine("Signature of transaction is not vallid.");
-            correct = false;
+            if (Stake.GetHighestStake() != RecieverKey || Amount != 1)
+            {
+                correct = false;
+            }
         }
 
         List<Block> orderedBlockchain = KetKoinChain.BlockChain.OrderBy(b => b.Timestamp).ToList();
@@ -86,5 +96,5 @@ public enum Type
 {
     Stake,
     Transaction,
-    Validator_fee
+    Reward
 }

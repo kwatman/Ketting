@@ -41,7 +41,7 @@ public class VerifyWorker : BackgroundService
                     }
                     else
                     {
-                        Console.WriteLine("the tblock has been added to the chain");
+                        Console.WriteLine("the block has been added to the chain");
                         Console.WriteLine("there are currently: " + KetKoinChain.BlockChain.Count + " blocks in the chain");
                         BroadcastService.BroadCastBlockMint(block,DiscoveryService.connections);
                     }

@@ -11,8 +11,8 @@ namespace KettingTests;
 public class KetCoinChainTest
 {
     private static KetKoinChain ketCoin;
-    private static KeyPair keyPair; 
-    
+    private static KeyPair keyPair;
+
     [ClassInitialize]
     public static void Setup(TestContext context)
     {
@@ -46,8 +46,8 @@ public class KetCoinChainTest
         KetKoinChain.TransactionPool.Add(new Transaction(50, wallet3.PublicKey,wallet3.PrivateKey,wallet4.PublicKey,1, Type.Transaction));
         Block block = ketCoin.MintBlock();
         KetKoinChain.BlockChain.Add(block);
-        Assert.AreEqual(10,KetKoinChain.GetBalance(wallet2.PublicKey));
-        Assert.AreEqual(50,KetKoinChain.GetBalance(wallet4.PublicKey));
+        Assert.AreEqual(10,ketCoin.GetBalance(wallet2.PublicKey));
+        Assert.AreEqual(50,ketCoin.GetBalance(wallet4.PublicKey));
     }
 }
 
