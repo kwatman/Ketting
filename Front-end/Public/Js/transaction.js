@@ -21,8 +21,6 @@ completeTranscaction.addEventListener("click", async(e)=>{
     }else{
         alert("Please select if stake or transaction")
     }
-    
-
 
     if(amount.toString().length > 0 && receiver.toString().length > 0){
         
@@ -60,7 +58,6 @@ completeTranscaction.addEventListener("click", async(e)=>{
         "signature": signature,
         "type": type
     }
-
     console.log(transaction);
 
     await fetch("http://"+localHost+"/transaction",{
