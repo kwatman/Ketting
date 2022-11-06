@@ -1,6 +1,6 @@
 const localHostBtn = document.getElementById("localHostBtn");
 
-let localHost =localStorage.getItem("address")
+let localHost = localStorage.getItem("address")
 
 if(localHostBtn != null){
     localHostBtn.addEventListener("click", async(e) => {

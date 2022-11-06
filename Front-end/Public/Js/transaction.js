@@ -36,7 +36,7 @@ completeTranscaction.addEventListener("click", async(e)=>{
         })
         .then(res => res.json())
         .then((res) => { 
-        
+        console.log(res)
         res.transactions.forEach((transaction) => {
             if(transaction.type == 1){
                 count += 1;
@@ -45,9 +45,12 @@ completeTranscaction.addEventListener("click", async(e)=>{
     });
 
     let signNotEncrypt = count + "@" + loginPublic + "@" + receiver  + "@" + amount + "@" + date;
+    console.log(signNotEncrypt);
     var sign = new JSEncrypt();
+    console.log(sign)
     sign.setPrivateKey(loginPrivate);
     var signature = sign.sign(signNotEncrypt, CryptoJS.SHA256, "sha256");
+    console.log(signature)
 
     let transaction = {
         "transactionNumber": count++,
