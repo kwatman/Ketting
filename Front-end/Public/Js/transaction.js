@@ -1,5 +1,4 @@
 const completeTranscaction = document.getElementById("completeTranscaction")
-let count = 0;
 
 completeTranscaction.addEventListener("click", async(e)=>{
     let localHost =localStorage.getItem("address")
@@ -31,6 +30,7 @@ completeTranscaction.addEventListener("click", async(e)=>{
             "publicKey": loginPublic
         };
  
+    let count = 0;
     await fetch("http://"+localHost+"/wallet",{
         method: "POST",
         headers: {"Content-Type":"application/json"},
