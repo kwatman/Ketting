@@ -42,7 +42,7 @@ public class KetKoinChain : KettingChain
 
         Byte[] bytes = new byte[0];
         Transaction minterReward = new Transaction(1,bytes,NodeKeys.PublicKey,1,"reward",Type.Reward);
-        
+        block.Data.Add(minterReward);
         block.Timestamp = DateTime.Now;
         block.PublicKey = Convert.ToBase64String(NodeKeys.rsa.ExportRSAPublicKey());
         block.Hash = Block.HashBlock(block.PrevHash, block.Data, block.Timestamp);

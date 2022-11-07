@@ -5,4 +5,5 @@ public class WalletDto
     public string Address { get; set; }
     public float Balance { get; set; }
     public List<TransactionDto> Transactions { get; set; }
+    public List<TransactionDto> TransactionsInPool { get; set; }
 }

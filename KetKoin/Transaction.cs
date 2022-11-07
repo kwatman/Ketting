@@ -47,39 +47,47 @@ public class Transaction : BlockData
     {
         bool correct = true;
         RSA rsaVerify = RSA.Create();
-        rsaVerify.ImportRSAPublicKey(SenderKey,out _);
-        string originalData = TransactionNumber + "@" + Convert.ToBase64String(SenderKey) + "@" + Convert.ToBase64String(RecieverKey) + "@" + Amount + "@" + TimeStamp.ToString("yyyy-MM-ddTHH:mm:ss");
         //Console.WriteLine(originalData);
         if(Type == Type.Transaction || Type == Type.Stake){
+            rsaVerify.ImportRSAPublicKey(SenderKey,out _);
+            string originalData = TransactionNumber + "@" + Convert.ToBase64String(SenderKey) + "@" + Convert.ToBase64String(RecieverKey) + "@" + Amount + "@" + TimeStamp.ToString("yyyy-MM-ddTHH:mm:ss");
             if (!rsaVerify.VerifyData(Convert.FromBase64String(Convert.ToBase64String(Encoding.UTF8.GetBytes(originalData))),
                     Convert.FromBase64String(Signature), HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1))
             {
                 Console.WriteLine("Signature of transaction is not vallid.");
                 correct = false;
             }
+            List<Block> orderedBlockchain = KetKoinChain.BlockChain.OrderBy(b => b.Timestamp).ToList();
+
+            foreach (Block block in orderedBlockchain)
+            {
+                foreach(Transaction transaction in block.Data)
+                {
+                    if (transaction.SenderKey.SequenceEqual(SenderKey))
+                    {
+                        if (transaction.TransactionNumber >= TransactionNumber)
+                        {
+                            Console.WriteLine("Transaction number already exists.");
+                            correct = false;
+                        }
+                    }
+                }
+            }
         }
         else if(Type == Type.Reward)
         {
-            if (Stake.GetHighestStake() != RecieverKey || Amount != 1)
+            Console.WriteLine("found reward");
+            if (!RecieverKey.SequenceEqual(Stake.GetHighestStake()))
             {
+                Console.WriteLine("reciever is not eligable for reward");
+                Console.WriteLine("reciever of reward: " + Convert.ToBase64String(RecieverKey));
+                Console.WriteLine("intended reciever of rewards: " + Convert.ToBase64String(Stake.GetHighestStake()));
                 correct = false;
             }
-        }
-
-        List<Block> orderedBlockchain = KetKoinChain.BlockChain.OrderBy(b => b.Timestamp).ToList();
-
-        foreach (Block block in orderedBlockchain)
-        {
-            foreach(Transaction transaction in block.Data)
+            if (Amount != 1)
             {
-                if (transaction.SenderKey.SequenceEqual(SenderKey))
-                {
-                    if (transaction.TransactionNumber >= TransactionNumber)
-                    {
-                        Console.WriteLine("Transaction number already exists.");
-                        correct = false;
-                    }
-                }
+                Console.WriteLine("The reward is not 1");
+                correct = false;
             }
         }
         return correct;
