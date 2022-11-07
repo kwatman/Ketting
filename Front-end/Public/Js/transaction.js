@@ -54,7 +54,7 @@ completeTranscaction.addEventListener("click", async(e)=>{
 
 
     let transaction = {
-        "transactionNumber": count,
+        "transactionNumber": count + 1,
         "amount": amount,
         "timeStamp": date,
         "senderKey": loginPublic,
