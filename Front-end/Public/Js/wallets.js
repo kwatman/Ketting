@@ -1,9 +1,8 @@
 const myWallet =document.getElementById("myWallet")
 const searchWalletBtn = document.getElementById("searchWalletButton")
-let localHost =localStorage.getItem("address")
 
 searchWalletBtn.addEventListener("click", async(e) => {
-        
+    let localHost =localStorage.getItem("address") 
     const searchWalletInput = document.getElementById("searchWalletInput").value
     
     if(searchWalletInput.toString().length > 0){
