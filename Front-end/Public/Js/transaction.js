@@ -41,12 +41,14 @@ completeTranscaction.addEventListener("click", async(e)=>{
         console.log(res)
         res.transactions.forEach((transaction) => {
             if(transaction.type == 1){
+                console.log(count)
                 count += 1;
             }
         })
         if(res.transactionsInPool != null){
             res.transactionsInPool.forEach((transaction) => {
                 if(transaction.type == 1){
+                    console.log(count)
                     count += 1;
                 }
             }) 

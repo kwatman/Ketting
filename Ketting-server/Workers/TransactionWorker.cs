@@ -1,6 +1,7 @@
 ﻿using KetKoin;
 using Ketting_server.Dto;
 using Ketting_server.Services;
+using Type = KetKoin.Type;
 
 namespace Ketting_server.Workers;
 
@@ -31,7 +32,8 @@ public class TransactionWorker: BackgroundService
                 TransactionDto transaction = TransactionService.TransactionBuffer[0];
 
                 Console.WriteLine("Recieved transaction");
-                if (KetKoinChain.TransactionPool.Any( t => t.Signature == transaction.Signature || t.TransactionNumber == transaction.TransactionNumber))
+                if (KetKoinChain.TransactionPool.Any( t => t.Signature == transaction.Signature || 
+                                                           (t.TransactionNumber == transaction.TransactionNumber && t.SenderKey.SequenceEqual(transaction.ToObject().SenderKey) && t.Type == transaction.ToObject().Type  )))
                 {
                     Console.WriteLine("that transaction has already been added to the pool");
                 }
