@@ -1,5 +1,6 @@
 const completeTranscaction = document.getElementById("completeTranscaction")
 let localHost =localStorage.getItem("address")
+let count = 0;
 
 completeTranscaction.addEventListener("click", async(e)=>{
 
@@ -21,16 +22,16 @@ completeTranscaction.addEventListener("click", async(e)=>{
     }else{
         alert("Please select if stake or transaction")
     }
-    
+    if(loginPrivate == null || loginPublic == null){
+        alert("the public or private key is null")
+    }
 
-
-    if(amount.toString().length > 0 && receiver.toString().length > 0){
+    if(amount.toString().length > 0 && receiver.toString().length > 0 && loginPrivate != null && loginPublic != null){
         
         let publicKey = {
             "publicKey": loginPublic
         };
-
-    let count = 0; 
+ 
     await fetch("http://localhost:5262/wallet",{
         method: "POST",
         headers: {"Content-Type":"application/json"},
@@ -38,21 +39,23 @@ completeTranscaction.addEventListener("click", async(e)=>{
         })
         .then(res => res.json())
         .then((res) => { 
-        
+        console.log(res)
         res.transactions.forEach((transaction) => {
             if(transaction.type == 1){
                 count += 1;
-            }        
+            }
+
         }) 
     });
 
     let signNotEncrypt = count + "@" + loginPublic + "@" + receiver  + "@" + amount + "@" + date;
-    var sign = new JSEncrypt();
+    let sign = new JSEncrypt();
     sign.setPrivateKey(loginPrivate);
-    var signature = sign.sign(signNotEncrypt, CryptoJS.SHA256, "sha256");
+    let signature = sign.sign(signNotEncrypt, CryptoJS.SHA256, "sha256");
+
 
     let transaction = {
-        "transactionNumber": count++,
+        "transactionNumber": count,
         "amount": amount,
         "timeStamp": date,
         "senderKey": loginPublic,
@@ -60,7 +63,6 @@ completeTranscaction.addEventListener("click", async(e)=>{
         "signature": signature,
         "type": type
     }
-
     console.log(transaction);
 
     await fetch("http://"+localHost+"/transaction",{
