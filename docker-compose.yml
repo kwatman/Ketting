@@ -7,15 +7,15 @@ services:
     ports:
       - '2400:80'
     expose:
-      - '80'   
+      - '80'
     networks:
       - ketkoin-network
-      
+  
   container2:
     image: ketkoinserver
     environment:
-      initial_conection: "192.168.1.30:2400"
-      base_url: "192.168.1.30:2401"
+      initial_conection: "192.168.0.248:2400"
+      base_url: "192.168.0.248:2401"
     ports:
       - '2401:80'
     expose:
@@ -24,12 +24,12 @@ services:
       - ketkoin-network
     depends_on:
       - "container1"
-      
+  
   container3:
     image: ketkoinserver
     environment:
-      initial_conection: "192.168.1.30:2400"
-      base_url: "192.168.1.30:2402"
+      initial_conection: "192.168.0.248:2400"
+      base_url: "192.168.0.248:2402"
     ports:
       - '2402:80'
     expose:
@@ -38,12 +38,12 @@ services:
       - ketkoin-network
     depends_on:
       - "container1"
-      
+  
   container4:
     image: ketkoinserver
     environment:
-      initial_conection: "192.168.1.30:2400"
-      base_url: "192.168.1.30:2403"
+      initial_conection: "192.168.0.248:2400"
+      base_url: "192.168.0.248:2403"
     ports:
       - '2403:80'
     expose:
@@ -52,12 +52,12 @@ services:
       - ketkoin-network
     depends_on:
       - "container1"
-      
+  
   container5:
     image: ketkoinserver
     environment:
-      initial_conection: "192.168.1.30:2400"
-      base_url: "192.168.1.30:2404"
+      initial_conection: "192.168.0.248:2400"
+      base_url: "192.168.0.248:2404"
     ports:
       - '2404:80'
     expose:
@@ -66,6 +66,13 @@ services:
       - ketkoin-network
     depends_on:
       - "container1"
+      
+  front-end:
+    image: ketkoin-frontend
+    ports:
+      - '3000:3000'
+    expose:
+      - '3000'
         
 networks:
   ketkoin-network:
