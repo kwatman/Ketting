@@ -31,7 +31,7 @@ public class TransactionWorker: BackgroundService
                 TransactionDto transaction = TransactionService.TransactionBuffer[0];
 
                 Console.WriteLine("Recieved transaction");
-                if (KetKoinChain.TransactionPool.Any( t => t.Signature == transaction.Signature))
+                if (KetKoinChain.TransactionPool.Any( t => t.Signature == transaction.Signature || t.TransactionNumber == transaction.TransactionNumber))
                 {
                     Console.WriteLine("that transaction has already been added to the pool");
                 }
