@@ -47,6 +47,7 @@ completeTranscaction.addEventListener("click", async(e)=>{
         }) 
     });
 
+    count += 1;
     let signNotEncrypt = count + "@" + loginPublic + "@" + receiver  + "@" + amount + "@" + date;
     let sign = new JSEncrypt();
     sign.setPrivateKey(loginPrivate);
@@ -54,7 +55,7 @@ completeTranscaction.addEventListener("click", async(e)=>{
 
 
     let transaction = {
-        "transactionNumber": count + 1,
+        "transactionNumber": count,
         "amount": amount,
         "timeStamp": date,
         "senderKey": loginPublic,
