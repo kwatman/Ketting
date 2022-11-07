@@ -11,7 +11,7 @@ if(localHostBtn != null){
             alert("Please enter ip or localhost address");
         }else{
             localStorage.setItem("address", localHostInput);
-            localHost= localStorage.getItem("publicKey");
+            localHost= localStorage.getItem("address");
         }  
 })};
 

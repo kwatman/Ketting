@@ -1,9 +1,8 @@
 const completeTranscaction = document.getElementById("completeTranscaction")
-let localHost =localStorage.getItem("address")
 let count = 0;
 
 completeTranscaction.addEventListener("click", async(e)=>{
-
+    let localHost =localStorage.getItem("address")
     e.preventDefault();
     const stakeRad = document.getElementById("radStake");
     const transactionRad = document.getElementById("radTransaction");
@@ -32,7 +31,7 @@ completeTranscaction.addEventListener("click", async(e)=>{
             "publicKey": loginPublic
         };
  
-    await fetch("http://localhost:5262/wallet",{
+    await fetch("http://"+localHost+"/wallet",{
         method: "POST",
         headers: {"Content-Type":"application/json"},
         body: JSON.stringify(publicKey),
