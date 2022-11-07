@@ -65,7 +65,7 @@ public class Transaction : BlockData
                 {
                     if (transaction.SenderKey.SequenceEqual(SenderKey))
                     {
-                        if (transaction.TransactionNumber >= TransactionNumber)
+                        if (transaction.TransactionNumber >= TransactionNumber && transaction.Type == Type)
                         {
                             Console.WriteLine("Transaction number already exists.");
                             correct = false;
