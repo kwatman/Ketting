@@ -1,4 +1,6 @@
 const completeTranscaction = document.getElementById("completeTranscaction")
+let count = 0;
+let countStake = 0;
 
 completeTranscaction.addEventListener("click", async(e)=>{
     let localHost =localStorage.getItem("address")
@@ -32,7 +34,7 @@ completeTranscaction.addEventListener("click", async(e)=>{
             "publicKey": loginPublic
         };
  
-    let count = 0;
+    
     await fetch("http://"+localHost+"/wallet",{
         method: "POST",
         headers: {"Content-Type":"application/json"},
@@ -45,27 +47,36 @@ completeTranscaction.addEventListener("click", async(e)=>{
             if(transaction.type == 1){
                 console.log(count)
                 count += 1;
-            }
+            }else if(transaction.type == 0){
+            console.log(countStake)
+            countStake +=1;
+        }
         })
         if(res.transactionsInPool != null){
+            console.log(res.transactionsInPool != null)
             res.transactionsInPool.forEach((transaction) => {
                 if(transaction.type == 1){
                     console.log(count)
                     count += 1;
+                }else if(transaction.type == 0){
+                    console.log(countStake)
+                    countStake +=1;
                 }
             }) 
         }
     });
 
     count += 1;
+    countStake += 1;
     let signNotEncrypt = count + "@" + loginPublic + "@" + receiver  + "@" + amount + "@" + date;
     let sign = new JSEncrypt();
     sign.setPrivateKey(loginPrivate);
     let signature = sign.sign(signNotEncrypt, CryptoJS.SHA256, "sha256");
+    console.log(signature)
 
 
     let transaction = {
-        "transactionNumber": count,
+        "transactionNumber": type == 1 ? count : countStake,  // This only works if you have 2 types in the frond end. 
         "amount": amount,
         "timeStamp": date,
         "senderKey": loginPublic,
