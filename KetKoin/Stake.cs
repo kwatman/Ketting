@@ -33,7 +33,7 @@ namespace KetKoin
             {
                 Block block = orderedBlockchain[i];
                 Console.WriteLine("Checking block with public key: ");
-                publicKeys.Add(Convert.FromBase64String(Convert.ToBase64String(Encoding.UTF8.GetBytes(block.PublicKey))));
+                publicKeys.Add(Convert.FromBase64String(block.PublicKey));
 
                 foreach (Transaction transaction in block.Data
                 .Where(t => t.GetType() == typeof(Transaction))
@@ -41,18 +41,30 @@ namespace KetKoin
                 .ToList())
                 {
                     Console.WriteLine("Checking transaction from: ");
-                    if (!stakePerSender.ContainsKey(transaction.SenderKey)
-                        && (
-                            (Math.Floor((double) (block.AmountOfStakers / 2)) < i
-                                && Convert.FromBase64String(Convert.ToBase64String(Encoding.UTF8.GetBytes(block.PublicKey))).SequenceEqual(transaction.SenderKey))
-                            || !Convert.FromBase64String(Convert.ToBase64String(Encoding.UTF8.GetBytes(block.PublicKey))).SequenceEqual(transaction.SenderKey)
-                            )
-                        && !publicKeys.Contains(transaction.SenderKey)
-                        )
-                    {
-                        Console.WriteLine("Found valid stake from: ");
-                        stakePerSender.Add(transaction.SenderKey, transaction.Amount * (i + 1));
+
+                    if (!stakePerSender.Any(t => t.Key.SequenceEqual(transaction.SenderKey))) {
+                        if((Math.Floor((double)(block.AmountOfStakers / 2)) < i
+                                && Convert.FromBase64String(block.PublicKey).SequenceEqual(transaction.SenderKey))
+                                || !Convert.FromBase64String(block.PublicKey).SequenceEqual(transaction.SenderKey)) {
+                            if (!publicKeys.Any(key => key.SequenceEqual(transaction.SenderKey))) {
+                                Console.WriteLine("Found valid stake from: ");
+                                stakePerSender.Add(transaction.SenderKey, transaction.Amount * (i + 1));
+                            }
+                            else
+                            {
+                                Console.WriteLine("Block with pub key already found");
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("if 2");
+                        }
                     }
+                    else
+                    {
+                        Console.WriteLine("Sender already has a stake");
+                    }
+
                 }
             }
 
