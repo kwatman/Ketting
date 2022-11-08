@@ -1,6 +1,5 @@
 const completeTranscaction = document.getElementById("completeTranscaction")
-let count = 0;
-let countStake = 0;
+
 
 completeTranscaction.addEventListener("click", async(e)=>{
     let localHost =localStorage.getItem("address")
@@ -33,8 +32,9 @@ completeTranscaction.addEventListener("click", async(e)=>{
         let publicKey = {
             "publicKey": loginPublic
         };
- 
-    
+
+        let count = 0;
+        let countStake = 0;
     await fetch("http://"+localHost+"/wallet",{
         method: "POST",
         headers: {"Content-Type":"application/json"},
@@ -68,7 +68,12 @@ completeTranscaction.addEventListener("click", async(e)=>{
 
     count += 1;
     countStake += 1;
-    let signNotEncrypt = count + "@" + loginPublic + "@" + receiver  + "@" + amount + "@" + date;
+    let signNotEncrypt;
+    if(type == 1){
+     signNotEncrypt = count + "@" + loginPublic + "@" + receiver  + "@" + amount + "@" + date;
+    } else if(type == 0){
+        signNotEncrypt = countStake + "@" + loginPublic + "@" + receiver  + "@" + amount + "@" + date;
+    }
     let sign = new JSEncrypt();
     sign.setPrivateKey(loginPrivate);
     let signature = sign.sign(signNotEncrypt, CryptoJS.SHA256, "sha256");
