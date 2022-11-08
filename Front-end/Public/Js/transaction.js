@@ -24,8 +24,10 @@ completeTranscaction.addEventListener("click", async(e)=>{
         alert("the public or private key is null")
     }
 
-    if(amount.toString().length > 0 && receiver.toString().length > 0 && loginPrivate != null && loginPublic != null){
-        
+    if(amount.toString().length > 0  && loginPrivate != null && loginPublic != null){
+        if(transactionRad.checked &&receiver.toString().length == 0){
+            alert("Fill receiver public key in")
+        }else{
         let publicKey = {
             "publicKey": loginPublic
         };
@@ -78,8 +80,9 @@ completeTranscaction.addEventListener("click", async(e)=>{
         headers: {"Content-Type":"application/json"},
         body: JSON.stringify(transaction)   
     }).then(async(res) => { 
-            alert("Transaction of " + amount + " has been completed");
+            alert("Transfer of " + amount + " has been completed");
     });
+    }
     }
     else{
         alert("Fill the inputfields to make transaction");
